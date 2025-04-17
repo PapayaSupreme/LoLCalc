@@ -3,4 +3,9 @@ project(LoLCalc)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(LoLCalc main.cpp)
+add_executable(LoLCalc main.cpp
+        Entity.cpp
+        Entity.h
+        Stats.h
+        Champion.cpp
+        Champion.h)

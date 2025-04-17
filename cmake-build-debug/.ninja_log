@@ -1,0 +1,5 @@
+# ninja log v6
+8	151	7666006599176444	CMakeFiles/LoLCalc.dir/Entity.cpp.obj	72402e058f103c4e
+14	155	7666006599236509	CMakeFiles/LoLCalc.dir/Champion.cpp.obj	9bdca894a1ebb2dc
+1	504	7666006599116458	CMakeFiles/LoLCalc.dir/main.cpp.obj	c7f53a488173ac55
+505	663	7666006604146643	LoLCalc.exe	8d585371350ba1e2
