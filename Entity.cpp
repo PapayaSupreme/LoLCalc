@@ -1,5 +1,6 @@
 // Entity.cpp
 #include "Entity.h"
+#include "Champion.h"
 
 Entity::Entity(const Stats& stats)
     : entity_stats(stats) {}
@@ -14,5 +15,22 @@ float Entity::getAS() const {return entity_stats.attackSpeed;}
 float Entity::getAH() const {return entity_stats.abilityHaste;}
 float Entity::getCrit() const {return entity_stats.critChance;}
 float Entity::getMS() const {return entity_stats.movementSpeed;}
-
+int Entity::getLevel() const {return entity_stats.level;}
 const Stats& Entity::getStats() const {return entity_stats;}
+
+float Entity::computeArmorReduction(const Entity& Source) {
+    float temp_armor = this->getArmor();
+    if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
+        if (temp_armor >= 0) {
+            temp_armor *= 1.0f - champSource->getArmorPen();
+            temp_armor -= champSource->getLethality();
+        }
+    }
+    float reduction;
+    if (temp_armor >= 0.0f) {
+        reduction = 100.0f / (100.0f + temp_armor);
+    }else {
+        reduction = 2.0f - 100.0f / (100.0f - temp_armor);
+    }
+    return reduction;
+}

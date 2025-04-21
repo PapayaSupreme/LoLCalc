@@ -23,3 +23,11 @@ float Champion::getUltimateHaste() const {return champion_stats.ultimateHaste;}
 float Champion::getCritDamageReduction() const {return champion_stats.critDamageReduction;}
 
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
+
+
+//dynamic cast way tocheck if its champion : const Champion* champSource = dynamic_cast<const Champion*>(&Source)
+DamageDone Champion::AutoAttackPost(const Entity& Source, DamageDone& dmg_pre) {
+    DamageDone dmg_post = dmg_pre;
+    dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(Source);
+    return dmg_post;
+}

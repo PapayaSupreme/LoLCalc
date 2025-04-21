@@ -16,6 +16,7 @@ struct Stats {
     float abilityHaste = 0.0f;
     float critChance = 0.0f;
     float movementSpeed = 0.0f;
+    int level = 1;
 };
 
 struct ChampionStats {

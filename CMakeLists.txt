@@ -8,4 +8,8 @@ add_executable(LoLCalc main.cpp
         Entity.h
         Stats.h
         Champion.cpp
-        Champion.h)
+        Champion.h
+        PreMitigationDamage.cpp
+        PreMitigationDamage.h
+        AutoAttack.cpp
+        AutoAttack.h)

@@ -1,6 +1,7 @@
 // Champion.h
 #pragma once
 #include "Entity.h"
+#include "PreMitigationDamage.h"
 
 class Champion : public Entity {
 protected:
@@ -27,4 +28,6 @@ public:
     [[nodiscard]] float getCritDamageReduction() const;
 
     [[nodiscard]] const ChampionStats& getChampionStats() const;
+
+    [[nodiscard]] DamageDone AutoAttackPost(const Entity& Source, DamageDone& dmg_pre);
 };
