@@ -29,5 +29,6 @@ public:
 
     [[nodiscard]] const ChampionStats& getChampionStats() const;
 
-    [[nodiscard]] DamageDone AutoAttackPost(const Entity& Source, DamageDone& dmg_pre);
+    [[nodiscard]] DamageDone AutoAttackPost(const Entity& Source, DamageDone& dmg_pre) override;
+    DamageDone TargetedAbilityPost(const Entity& Source, DamageDone& dmg_pre);
 };

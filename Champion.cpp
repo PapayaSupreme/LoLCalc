@@ -25,9 +25,23 @@ float Champion::getCritDamageReduction() const {return champion_stats.critDamage
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
 
 
-//dynamic cast way tocheck if its champion : const Champion* champSource = dynamic_cast<const Champion*>(&Source)
+//dynamic cast way to check if its champion : const Champion* champSource = dynamic_cast<const Champion*>(&Source)
 DamageDone Champion::AutoAttackPost(const Entity& Source, DamageDone& dmg_pre) {
     DamageDone dmg_post = dmg_pre;
     dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(Source);
+    return dmg_post;
+}
+
+DamageDone Champion::TargetedAbilityPost(const Entity& Source, DamageDone& dmg_pre) {
+    DamageDone dmg_post = dmg_pre;
+    if (dmg_post[static_cast<int>(DamageType::Physical)] > 0.0f) {
+        dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(Source);
+    }
+    if (dmg_post[static_cast<int>(DamageType::Magical)] > 0.0f) {
+        dmg_post[static_cast<int>(DamageType::Magical)] *= computeMagicReduction(Source);
+    }
+    if (dmg_post[static_cast<int>(DamageType::True)] > 0.0f) {
+        dmg_post[static_cast<int>(DamageType::True)] *= computeMagicReduction(Source);
+    }
     return dmg_post;
 }

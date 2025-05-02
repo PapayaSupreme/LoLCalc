@@ -24,6 +24,7 @@ public:
     [[nodiscard]] const Stats& getStats() const;
 
     [[nodiscard]] virtual float computeArmorReduction(const Entity& Source);
+    [[nodiscard]] virtual float computeMagicReduction(const Entity& Source);
     [[nodiscard]] virtual DamageDone AutoAttackPost(const Entity& source, DamageDone& dmg_pre) = 0;
     virtual ~Entity() = default;  // polymorphic destruction
 };

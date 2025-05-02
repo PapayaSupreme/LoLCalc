@@ -12,4 +12,6 @@ add_executable(LoLCalc main.cpp
         PreMitigationDamage.cpp
         PreMitigationDamage.h
         AutoAttack.cpp
-        AutoAttack.h)
+        AutoAttack.h
+        TargetedAbility.cpp
+        TargetedAbility.h)

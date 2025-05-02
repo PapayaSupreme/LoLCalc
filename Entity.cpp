@@ -34,3 +34,20 @@ float Entity::computeArmorReduction(const Entity& Source) {
     }
     return reduction;
 }
+
+float Entity::computeMagicReduction(const Entity& Source) {
+    float temp_mr = this->getMR();
+    if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
+        if (temp_mr >= 0) {
+            temp_mr *= 1.0f - champSource->getMagicPen();
+            temp_mr -= champSource->getMagicPenFlat();
+        }
+    }
+    float reduction;
+    if (temp_mr >= 0.0f) {
+        reduction = 100.0f / (100.0f + temp_mr);
+    }else {
+        reduction = 2.0f - 100.0f / (100.0f - temp_mr);
+    }
+    return reduction;
+}
