@@ -1,7 +1,7 @@
 //AutoAttck.cpp
 #include "AutoAttack.h"
 
-#include "Entity.h"
+#include "../entities/Entity.h"
 AutoAttack::AutoAttack(const Entity& source, const Entity& target)
     : PreMitigationDamage(source, target) {}
 DamageDone AutoAttack::computePremitigationDamage() const{

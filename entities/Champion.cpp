@@ -13,26 +13,24 @@ float Champion::getMagicPenFlat() const {return champion_stats.magicPenFlat;}
 float Champion::getMagicPen() const {return champion_stats.magicPen;}
 float Champion::getLifeSteal() const {return champion_stats.lifeSteal;}
 float Champion::getOmnivamp() const {return champion_stats.omnivamp;}
-float Champion::getAttackRange() const {return champion_stats.attackRange;}
 float Champion::getTenacity() const {return champion_stats.tenacity;}
 
 float Champion::getSpellVamp() const {return champion_stats.spellVamp;}
 float Champion::getCritDamage() const {return champion_stats.critDamage;}
-float Champion::getBasicSpellsHaste() const {return champion_stats.basicSpellsHaste;}
+float Champion::getBasicAbilityHaste() const {return champion_stats.basicSpellsHaste;}
 float Champion::getUltimateHaste() const {return champion_stats.ultimateHaste;}
 float Champion::getCritDamageReduction() const {return champion_stats.critDamageReduction;}
 
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
 
 
-//dynamic cast way to check if its champion : const Champion* champSource = dynamic_cast<const Champion*>(&Source)
-DamageDone Champion::AutoAttackPost(const Entity& Source, DamageDone& dmg_pre) {
+DamageDone Champion::PostAutoAttack(const Entity& Source, DamageDone& dmg_pre) {
     DamageDone dmg_post = dmg_pre;
     dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(Source);
     return dmg_post;
 }
 
-DamageDone Champion::TargetedAbilityPost(const Entity& Source, DamageDone& dmg_pre) {
+DamageDone Champion::PostTargetedAbility(const Entity& Source, DamageDone& dmg_pre) {
     DamageDone dmg_post = dmg_pre;
     if (dmg_post[static_cast<int>(DamageType::Physical)] > 0.0f) {
         dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(Source);

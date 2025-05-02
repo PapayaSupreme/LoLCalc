@@ -4,14 +4,14 @@ project(LoLCalc)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(LoLCalc main.cpp
-        Entity.cpp
-        Entity.h
-        Stats.h
-        Champion.cpp
-        Champion.h
-        PreMitigationDamage.cpp
-        PreMitigationDamage.h
-        AutoAttack.cpp
-        AutoAttack.h
-        TargetedAbility.cpp
-        TargetedAbility.h)
+        entities/Entity.cpp
+        entities/Entity.h
+        entities/Stats.h
+        entities/Champion.cpp
+        entities/Champion.h
+        damage/PreMitigationDamage.cpp
+        damage/PreMitigationDamage.h
+        damage/AutoAttack.cpp
+        damage/AutoAttack.h
+        damage/TargetedAbility.cpp
+        damage/TargetedAbility.h)

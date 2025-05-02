@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Champion.h"
-#include "AutoAttack.h"
-#include "TargetedAbility.h"
+#include "entities/Champion.h"
+#include "damage/AutoAttack.h"
+#include "damage/TargetedAbility.h"
 
 int main() {
     // === Champion Setup ===
@@ -31,7 +31,7 @@ int main() {
     // === Test AutoAttack ===
     AutoAttack aa(kennen, garen);
     DamageDone aa_pre = aa.computePremitigationDamage();
-    DamageDone aa_post = garen.AutoAttackPost(kennen, aa_pre);
+    DamageDone aa_post = garen.PostAutoAttack(kennen, aa_pre);
 
     std::cout << "=== Auto Attack Test ===\n";
     std::cout << "Raw physical damage: " << aa_pre[0] << "\n";
@@ -48,11 +48,11 @@ int main() {
         /* cooldown = */ 8.0f,
         /* range = */ 600,
         /* channel = */ 0,
-        /* damage_type = */ 1  // magical
+        /* damage type = */ DamageType::Magical
     );
 
     DamageDone q_pre = kennenQ.computePremitigationDamage();
-    DamageDone q_post = garen.TargetedAbilityPost(kennen, q_pre);
+    DamageDone q_post = garen.PostTargetedAbility(kennen, q_pre);
 
     std::cout << "\n=== Targeted Ability Test ===\n";
     std::cout << "Raw physical damage: " << q_pre[0] << "\n";  // index 0 = physical

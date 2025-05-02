@@ -16,9 +16,10 @@ float Entity::getAH() const {return entity_stats.abilityHaste;}
 float Entity::getCrit() const {return entity_stats.critChance;}
 float Entity::getMS() const {return entity_stats.movementSpeed;}
 int Entity::getLevel() const {return entity_stats.level;}
+float Entity::getAttackRange() const {return entity_stats.attackRange;}
 const Stats& Entity::getStats() const {return entity_stats;}
 
-float Entity::computeArmorReduction(const Entity& Source) {
+float Entity::computeArmorReduction(const Entity& Source) const {
     float temp_armor = this->getArmor();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_armor >= 0) {
@@ -35,7 +36,7 @@ float Entity::computeArmorReduction(const Entity& Source) {
     return reduction;
 }
 
-float Entity::computeMagicReduction(const Entity& Source) {
+float Entity::computeMagicReduction(const Entity& Source) const {
     float temp_mr = this->getMR();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_mr >= 0) {

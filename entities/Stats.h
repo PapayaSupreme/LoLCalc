@@ -4,7 +4,7 @@
 struct Stats {
     /*
      * Basic stats for entities.
-     * All floats
+     * All floats except level.
      */
     float maxHP = 0.0f;
     float currentHP = 0.0f;
@@ -17,9 +17,15 @@ struct Stats {
     float critChance = 0.0f;
     float movementSpeed = 0.0f;
     int level = 1;
+    //hidden stats
+    float attackRange = 0.0f;
 };
 
 struct ChampionStats {
+    /*
+     * Champion stats for entities.
+     * All floats.
+     */
     float healthRegen = 0.0f;
     float resourceRegen = 0.0f;
     float healShieldPower = 0.0f;
@@ -29,7 +35,6 @@ struct ChampionStats {
     float magicPen = 0.0f;
     float lifeSteal = 0.0f;
     float omnivamp = 0.0f;
-    float attackRange = 0.0f;
     float tenacity = 0.0f;
     //hidden stats
     float spellVamp = 0.0f;
