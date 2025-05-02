@@ -43,3 +43,33 @@ struct ChampionStats {
     float ultimateHaste = 0.0f;
     float critDamageReduction = 0.0f;
 };
+
+struct TargetedAbilityStats {
+    /*
+     * Targeted ability stats for entities.
+     */
+    float AD_ratio = 0.0f;
+    float AP_ratio = 0.0f;
+    float base_damage = 0.0f;
+    bool ultimate = false;
+    int cost = 0;
+    float cooldown = 0.0f;
+    int range = 0;
+    int channel = 0;
+};
+
+struct AoEAbilityStats {
+    /*
+     * AoE ability stats for entities.
+     */
+    float AD_ratio = 0.0f;
+    float AP_ratio = 0.0f;
+    float base_damage = 0.0f;
+    bool ultimate = false;
+    int cost = 0;
+    float cooldown = 0.0f;
+    int range = 0;
+    int channel = 0;
+    int diamter = 0;//WIP i'll do more shapes than circles
+};
+

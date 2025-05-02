@@ -66,6 +66,8 @@ public:
      */
     [[nodiscard]] virtual DamageDone PostTargetedAbility(const Entity& source, DamageDone& dmg_pre) = 0;
 
+    [[nodiscard]] virtual DamageDone PostAoEAbility(const Entity& Source, DamageDone& dmg_pre) = 0;
+
 
     virtual ~Entity() = default;  // polymorphic destruction
 };

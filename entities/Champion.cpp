@@ -38,8 +38,16 @@ DamageDone Champion::PostTargetedAbility(const Entity& Source, DamageDone& dmg_p
     if (dmg_post[static_cast<int>(DamageType::Magical)] > 0.0f) {
         dmg_post[static_cast<int>(DamageType::Magical)] *= computeMagicReduction(Source);
     }
-    if (dmg_post[static_cast<int>(DamageType::True)] > 0.0f) {
-        dmg_post[static_cast<int>(DamageType::True)] *= computeMagicReduction(Source);
+    return dmg_post;
+}
+
+DamageDone Champion::PostAoEAbility(const Entity& Source, DamageDone& dmg_pre) {
+    DamageDone dmg_post = dmg_pre;
+    if (dmg_post[static_cast<int>(DamageType::Physical)] > 0.0f) {
+        dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(Source);
+    }
+    if (dmg_post[static_cast<int>(DamageType::Magical)] > 0.0f) {
+        dmg_post[static_cast<int>(DamageType::Magical)] *= computeMagicReduction(Source);
     }
     return dmg_post;
 }

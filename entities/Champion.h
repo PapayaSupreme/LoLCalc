@@ -11,7 +11,6 @@ class Champion : public Entity {
      */
 protected:
     ChampionStats champion_stats;
-
 public:
     /*
      * Constructor for Champion.
@@ -62,4 +61,6 @@ public:
      * Computes the damage done to the champion by an unmitigated targeted ability.
      */
     [[nodiscard]] DamageDone PostTargetedAbility(const Entity& Source, DamageDone& dmg_pre) override;
+
+    [[nodiscard]] DamageDone PostAoEAbility(const Entity& Source, DamageDone& dmg_pre) override;
 };

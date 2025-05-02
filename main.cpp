@@ -1,7 +1,8 @@
 #include <iostream>
 #include "entities/Champion.h"
-#include "damage/AutoAttack.h"
 #include "damage/TargetedAbility.h"
+#include "damage/AoEAbility.h"
+#include "test/testDamage.h"
 
 int main() {
     // === Champion Setup ===
@@ -13,54 +14,46 @@ int main() {
         .critChance = 0.0f, .movementSpeed = 335,
         .level = 11
     };
-
     ChampionStats kennenExtras = {
         .lethality = 12.0f,
         .armorPen = 0.2f,
         // other stats = 0
     };
-
     Champion kennen(kennenStats, kennenExtras);
+
+
+    TargetedAbilityStats kennenQstats = {
+        .AD_ratio = 0.3f,
+        .AP_ratio = 0.6f,
+        .base_damage = 100.0f,
+        .ultimate = false,
+        .cost = 50,
+        .cooldown = 8.0f,
+        .range = 600,
+        .channel = 0
+    };
+    AoEAbilityStats kennenRstats = {
+        .AD_ratio = 0.3f,
+        .AP_ratio = 0.6f,
+        .base_damage = 100.0f,
+        .ultimate = true,
+        .cost = 100,
+        .cooldown = 120.0f,
+        .range = 600,
+        .channel = 0
+    };
+    DamageType damageTypekennenq = DamageType::Magical;
+    DamageType damageTypekennenr = DamageType::Physical;
+
 
     Stats garenStats = kennenStats;
     garenStats.armor = 80;
     garenStats.magicResist = 60;
+    ChampionStats garenExtras = {};
+    Champion garen(garenStats, garenExtras);  // simulate garen as target
 
-    Champion garen(garenStats, kennenExtras);  // simulate garen as target
-
-    // === Test AutoAttack ===
-    AutoAttack aa(kennen, garen);
-    DamageDone aa_pre = aa.computePremitigationDamage();
-    DamageDone aa_post = garen.PostAutoAttack(kennen, aa_pre);
-
-    std::cout << "=== Auto Attack Test ===\n";
-    std::cout << "Raw physical damage: " << aa_pre[0] << "\n";
-    std::cout << "Post-armor damage:   " << aa_post[0] << "\n";
-
-    // === Test TargetedAbility (magic damage) ===
-    TargetedAbility kennenQ(
-        kennen, garen,
-        /* AD ratio = */ 0.3f,
-        /* AP ratio = */ 0.6f,
-        /* base damage = */ 100.0f,
-        /* ultimate = */ false,
-        /* cost = */ 50,
-        /* cooldown = */ 8.0f,
-        /* range = */ 600,
-        /* channel = */ 0,
-        /* damage type = */ DamageType::Magical
-    );
-
-    DamageDone q_pre = kennenQ.computePremitigationDamage();
-    DamageDone q_post = garen.PostTargetedAbility(kennen, q_pre);
-
-    std::cout << "\n=== Targeted Ability Test ===\n";
-    std::cout << "Raw physical damage: " << q_pre[0] << "\n";  // index 0 = physical
-    std::cout << "Raw Magic Damage:        " << q_pre[1] << "\n";  // index 1 = magical
-    std::cout << "Raw True Damage:         " << q_pre[2] << "\n";  // index 2 = true
-    std::cout << "Post-armor damage:       " << q_post[0] << "\n";
-    std::cout << "Post-magic damage:       " << q_post[1] << "\n";
-    std::cout << "Post-true damage:        " << q_post[2] << "\n";
-
+    testAutoAttackDamage(kennen, garen);
+    testTargetedAbilityDamage(kennen, garen, kennenQstats, damageTypekennenq);
+    testAOEDamage(kennen, garen, kennenRstats, damageTypekennenr);
     return 0;
 }
