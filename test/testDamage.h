@@ -12,3 +12,7 @@ void testTargetedAbilityDamage(const Entity& source, Entity& target, const Targe
 // === AoE Damage Test ===
 void testAOEDamage(const Entity& source, Entity& target,
                    const AoEAbilityStats &aoe_ability_stats, DamageType type);
+
+// === DoT Damage Test ===
+void testDoTDamage(const Entity& source, Entity& target,
+                   const DoTAbilityStats &dot_ability_stats, DamageType type);

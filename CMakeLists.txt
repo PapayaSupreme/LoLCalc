@@ -18,4 +18,6 @@ add_executable(LoLCalc main.cpp
         damage/AoEAbility.cpp
         damage/AoEAbility.h
         test/testDamage.cpp
-        test/testDamage.h)
+        test/testDamage.h
+        damage/DoTAbility.cpp
+        damage/DoTAbility.h)

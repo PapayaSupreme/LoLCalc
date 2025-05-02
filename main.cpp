@@ -46,14 +46,26 @@ int main() {
     DamageType damageTypekennenr = DamageType::Physical;
 
 
-    Stats garenStats = kennenStats;
-    garenStats.armor = 80;
-    garenStats.magicResist = 60;
-    ChampionStats garenExtras = {};
-    Champion garen(garenStats, garenExtras);  // simulate garen as target
+    Stats brandStats = kennenStats;
+    brandStats.armor = 80;
+    brandStats.magicResist = 60;
+    ChampionStats brandExtras = {};
+    Champion brand(brandStats, brandExtras);  // simulate brand as target
+    DoTAbilityStats brandqstats = {
+        .AD_ratio = 0.3f,
+        .AP_ratio = 0.6f,
+        .base_damage = 100.0f,
+        .ultimate = false,
+        .cost = 50,
+        .cooldown = 8.0f,
+        .range = 600,
+        .duration = 2.0f,
+        .tick_rate = 0.5f
+    };
 
-    testAutoAttackDamage(kennen, garen);
-    testTargetedAbilityDamage(kennen, garen, kennenQstats, damageTypekennenq);
-    testAOEDamage(kennen, garen, kennenRstats, damageTypekennenr);
+    testAutoAttackDamage(kennen, brand);
+    testTargetedAbilityDamage(kennen, brand, kennenQstats, damageTypekennenq);
+    testAOEDamage(kennen, brand, kennenRstats, damageTypekennenr);
+    testDoTDamage(brand, kennen, brandqstats, damageTypekennenq);
     return 0;
 }

@@ -70,6 +70,21 @@ struct AoEAbilityStats {
     float cooldown = 0.0f;
     int range = 0;
     int channel = 0;
-    int diamter = 0;//WIP i'll do more shapes than circles
+    int diameter = 0;//WIP i'll do more shapes than circles
+};
+
+struct DoTAbilityStats {
+    /*
+     * DoT ability stats for entities.
+     */
+    float AD_ratio = 0.0f;
+    float AP_ratio = 0.0f;
+    float base_damage = 0.0f;
+    bool ultimate = false;
+    int cost = 0;
+    float cooldown = 0.0f;
+    int range = 0;
+    float duration = 0.0f;
+    float tick_rate = 0;// between 0.125, 0.25, 0.5, 1.0 seconds
 };
 

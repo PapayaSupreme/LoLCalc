@@ -97,6 +97,12 @@ build CMakeFiles/LoLCalc.dir/test/testDamage.cpp.obj: CXX_COMPILER__LoLCalc_unsc
   OBJECT_DIR = CMakeFiles\LoLCalc.dir
   OBJECT_FILE_DIR = CMakeFiles\LoLCalc.dir\test
 
+build CMakeFiles/LoLCalc.dir/damage/DoTAbility.cpp.obj: CXX_COMPILER__LoLCalc_unscanned_Debug C$:/Users/pablo/CLionProjects/LoLCalc/damage/DoTAbility.cpp || cmake_object_order_depends_target_LoLCalc
+  DEP_FILE = CMakeFiles\LoLCalc.dir\damage\DoTAbility.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\LoLCalc.dir
+  OBJECT_FILE_DIR = CMakeFiles\LoLCalc.dir\damage
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target LoLCalc
@@ -105,7 +111,7 @@ build CMakeFiles/LoLCalc.dir/test/testDamage.cpp.obj: CXX_COMPILER__LoLCalc_unsc
 #############################################
 # Link the executable LoLCalc.exe
 
-build LoLCalc.exe: CXX_EXECUTABLE_LINKER__LoLCalc_Debug CMakeFiles/LoLCalc.dir/main.cpp.obj CMakeFiles/LoLCalc.dir/entities/Entity.cpp.obj CMakeFiles/LoLCalc.dir/entities/Champion.cpp.obj CMakeFiles/LoLCalc.dir/damage/PreMitigationDamage.cpp.obj CMakeFiles/LoLCalc.dir/damage/AutoAttack.cpp.obj CMakeFiles/LoLCalc.dir/damage/TargetedAbility.cpp.obj CMakeFiles/LoLCalc.dir/damage/AoEAbility.cpp.obj CMakeFiles/LoLCalc.dir/test/testDamage.cpp.obj
+build LoLCalc.exe: CXX_EXECUTABLE_LINKER__LoLCalc_Debug CMakeFiles/LoLCalc.dir/main.cpp.obj CMakeFiles/LoLCalc.dir/entities/Entity.cpp.obj CMakeFiles/LoLCalc.dir/entities/Champion.cpp.obj CMakeFiles/LoLCalc.dir/damage/PreMitigationDamage.cpp.obj CMakeFiles/LoLCalc.dir/damage/AutoAttack.cpp.obj CMakeFiles/LoLCalc.dir/damage/TargetedAbility.cpp.obj CMakeFiles/LoLCalc.dir/damage/AoEAbility.cpp.obj CMakeFiles/LoLCalc.dir/test/testDamage.cpp.obj CMakeFiles/LoLCalc.dir/damage/DoTAbility.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LoLCalc.dir
