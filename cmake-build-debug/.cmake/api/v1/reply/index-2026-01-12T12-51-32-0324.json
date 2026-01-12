@@ -11,31 +11,31 @@
 			"cmake" : "C:/Users/pablo/Apps/CLion 2024.1.4/bin/cmake/win/x64/bin/cmake.exe",
 			"cpack" : "C:/Users/pablo/Apps/CLion 2024.1.4/bin/cmake/win/x64/bin/cpack.exe",
 			"ctest" : "C:/Users/pablo/Apps/CLion 2024.1.4/bin/cmake/win/x64/bin/ctest.exe",
-			"root" : "C:/Users/pablo/Apps/CLion 2024.1.4/bin/cmake/win/x64/share/cmake-3.31"
+			"root" : "C:/Users/pablo/Apps/CLion 2024.1.4/bin/cmake/win/x64/share/cmake-4.1"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
-			"major" : 3,
-			"minor" : 31,
-			"patch" : 6,
-			"string" : "3.31.6",
+			"major" : 4,
+			"minor" : 1,
+			"patch" : 2,
+			"string" : "4.1.2",
 			"suffix" : ""
 		}
 	},
 	"objects" : 
 	[
 		{
-			"jsonFile" : "codemodel-v2-22d9e69d921c51f56d9b.json",
+			"jsonFile" : "codemodel-v2-97a914f9e90b6df4b4b6.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
 				"major" : 2,
-				"minor" : 7
+				"minor" : 8
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-b1e491f90534b594b7b2.json",
+			"jsonFile" : "cache-v2-d4589a151fe67b81105a.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cmakeFiles-v1-7e0f51a903ae6b4589d4.json",
+			"jsonFile" : "cmakeFiles-v1-1257d71a60b4173b6308.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -66,7 +66,7 @@
 	{
 		"cache-v2" : 
 		{
-			"jsonFile" : "cache-v2-b1e491f90534b594b7b2.json",
+			"jsonFile" : "cache-v2-d4589a151fe67b81105a.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -76,7 +76,7 @@
 		},
 		"cmakeFiles-v1" : 
 		{
-			"jsonFile" : "cmakeFiles-v1-7e0f51a903ae6b4589d4.json",
+			"jsonFile" : "cmakeFiles-v1-1257d71a60b4173b6308.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -86,12 +86,12 @@
 		},
 		"codemodel-v2" : 
 		{
-			"jsonFile" : "codemodel-v2-22d9e69d921c51f56d9b.json",
+			"jsonFile" : "codemodel-v2-97a914f9e90b6df4b4b6.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
 				"major" : 2,
-				"minor" : 7
+				"minor" : 8
 			}
 		},
 		"toolchains-v1" : 

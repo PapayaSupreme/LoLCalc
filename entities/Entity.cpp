@@ -1,22 +1,25 @@
 // Entity.cpp
 #include "Entity.h"
+
+#include <iostream>
+
 #include "Champion.h"
 
-Entity::Entity(const Stats& stats)
-    : entity_stats(stats) {}
+Entity::Entity(std::string name, const Stats &stats)
+    : name(std::move(name)), entity_stats(stats) {}
 
-float Entity::getHP() const {return entity_stats.maxHP;}
-float Entity::getCurrHP() const {return entity_stats.currentHP;}
-float Entity::getAD() const {return entity_stats.AD;}
+float Entity::getHP() const {return entity_stats.max_HP;}
+float Entity::getCurrHP() const {return entity_stats.current_HP;}
+float Entity::getBaseAD() const {return entity_stats.base_AD;}
+float Entity::getBonusAD() const {return entity_stats.bonus_AD;}
 float Entity::getAP() const {return entity_stats.AP;}
-float Entity::getArmor() const {return entity_stats.armor;}
-float Entity::getMR() const {return entity_stats.magicResist;}
-float Entity::getAS() const {return entity_stats.attackSpeed;}
-float Entity::getAH() const {return entity_stats.abilityHaste;}
-float Entity::getCrit() const {return entity_stats.critChance;}
-float Entity::getMS() const {return entity_stats.movementSpeed;}
+float Entity::getArmor() const {return entity_stats.base_armor;}
+float Entity::getMR() const {return entity_stats.base_MR;}
+float Entity::getAS() const {return entity_stats.attack_speed;}
+float Entity::getAH() const {return entity_stats.ability_haste;}
+float Entity::getCrit() const {return entity_stats.crit_chance;}
+float Entity::getMS() const {return entity_stats.MS;}
 int Entity::getLevel() const {return entity_stats.level;}
-float Entity::getAttackRange() const {return entity_stats.attackRange;}
 const Stats& Entity::getStats() const {return entity_stats;}
 
 float Entity::computeArmorReduction(const Entity& Source) const {

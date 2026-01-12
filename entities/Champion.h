@@ -1,5 +1,6 @@
 // Champion.h
 #pragma once
+
 #include "Entity.h"
 #include "../damage/PreMitigationDamage.h"
 
@@ -16,7 +17,7 @@ public:
      * Constructor for Champion.
      * Initializes the champion with the given basic stats and champion stats.
      */
-    Champion(const Stats& stats, const ChampionStats& champion_stats);
+    Champion(std::string name, const Stats& stats, const ChampionStats& champion_stats);
 
     // Champion stat health regeneration getter
     [[nodiscard]] float getHealthRegen() const;
@@ -53,14 +54,7 @@ public:
 
 
     /*
-     * Computes the damage done to the champion by an unmitigated auto attack.
+     * Computes the damage done to the champion by an unmitigated attack.
      */
-    [[nodiscard]] DamageDone PostAutoAttack(const Entity& Source, DamageDone& dmg_pre) override;
-
-    /*
-     * Computes the damage done to the champion by an unmitigated targeted ability.
-     */
-    [[nodiscard]] DamageDone PostTargetedAbility(const Entity& Source, DamageDone& dmg_pre) override;
-
-    [[nodiscard]] DamageDone PostAoEAbility(const Entity& Source, DamageDone& dmg_pre) override;
+    [[nodiscard]] DamageDone PostAttack(const Entity& Source, DamageDone& dmg_pre) override;
 };

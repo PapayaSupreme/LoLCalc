@@ -1,71 +1,73 @@
 #include <iostream>
 #include "entities/Champion.h"
-#include "damage/TargetedAbility.h"
-#include "damage/AoEAbility.h"
+#include "damage/Ability.h"
+#include "damage/Effect.h"
 #include "test/testDamage.h"
 
 int main() {
     // === Champion Setup ===
-    Stats kennenStats = {
-        .maxHP = 600, .currentHP = 600,
-        .AD = 80, .AP = 100,
-        .armor = 30, .magicResist = 32,
-        .attackSpeed = 0.7f, .abilityHaste = 0.0f,
-        .critChance = 0.0f, .movementSpeed = 335,
-        .level = 11
+    Stats sionStats = {
+        .max_HP = 1000,
+        .current_HP = 1000,
+        .base_AD = 68,
+        .bonus_AD = 51,
+        .AP = 0,
+        .base_armor = 80,
+        .bonus_armor = 0,
+        .base_MR = 50,
+        .bonus_MR = 0,
+        .base_resource = 0,
+        .bonus_resource = 0,
+        .current_resource = 0,
+        .attack_speed = 0.7f,
+        .ability_haste = 0,
+        .crit_chance = 0,
+        .MS = 350,
+        .level = 18
     };
-    ChampionStats kennenExtras = {
-        .lethality = 12.0f,
-        .armorPen = 0.2f,
-        // other stats = 0
+    ChampionStats sionExtras = {
+        .health_regen = 10,
+        .resource_regen = 0,
+        .heal_shield_power = 0,
+        .lethality = 0.0f,
+        .armor_pen = 0.0f,
+        .magic_pen_flat = 0,
+        .magic_pen = 0,
+        .lifesteal = 0,
+        .omnivamp = 0,
+        .tenacity = 0,
+        .spell_vamp = 0,
+        .AD_vamp = 0,
+        .crit_damage = 0,
+        .basic_spells_haste = 0,
+        .ultimate_haste = 0,
+        .crit_damage_reduction = 0
     };
-    Champion kennen(kennenStats, kennenExtras);
+    Champion sion("Sion", sionStats, sionExtras);
 
 
-    TargetedAbilityStats kennenQstats = {
-        .AD_ratio = 0.3f,
-        .AP_ratio = 0.6f,
-        .base_damage = 100.0f,
-        .ultimate = false,
-        .cost = 50,
-        .cooldown = 8.0f,
-        .range = 600,
-        .channel = 0
-    };
-    AoEAbilityStats kennenRstats = {
-        .AD_ratio = 0.3f,
-        .AP_ratio = 0.6f,
-        .base_damage = 100.0f,
-        .ultimate = true,
-        .cost = 100,
-        .cooldown = 120.0f,
-        .range = 600,
-        .channel = 0
-    };
-    DamageType damageTypekennenq = DamageType::Magical;
-    DamageType damageTypekennenr = DamageType::Physical;
+    Effect AutoAttackEffect("Auto Attack", 0.0f,
+                                  {{TermStat::AD_ratio, 1}},
+                                  0.0f, std::numeric_limits<float>::infinity(),
+                                  std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
+                                  1.0f, 0.0f, 0.0f);
 
+    Effect BORKEffect("Mist's Edge", 0.0f,
+                                  {{TermStat::target_current_health_ratio, 0.09}},
+                                  0.0f, std::numeric_limits<float>::infinity(),
+                                  std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
+                                  1.0f, 0.0f, 0.0f);
 
-    Stats brandStats = kennenStats;
-    brandStats.armor = 80;
-    brandStats.magicResist = 60;
+    Stats brandStats = sionStats;
+    brandStats.base_armor = 50;
+    brandStats.base_MR = 50;
     ChampionStats brandExtras = {};
-    Champion brand(brandStats, brandExtras);  // simulate brand as target
-    DoTAbilityStats brandqstats = {
-        .AD_ratio = 0.3f,
-        .AP_ratio = 0.6f,
-        .base_damage = 100.0f,
-        .ultimate = false,
-        .cost = 50,
-        .cooldown = 8.0f,
-        .range = 600,
-        .duration = 2.0f,
-        .tick_rate = 0.5f
-    };
+    Champion brand("Brand", brandStats, brandExtras);  // simulate brand as target
 
-    testAutoAttackDamage(kennen, brand);
-    testTargetedAbilityDamage(kennen, brand, kennenQstats, damageTypekennenq);
-    testAOEDamage(kennen, brand, kennenRstats, damageTypekennenr);
-    testDoTDamage(brand, kennen, brandqstats, damageTypekennenq);
+    //testAutoAttackDamage(sion, brand);
+    testEffectDamage(sion, brand, AutoAttackEffect);
+    testEffectDamage(sion, brand, BORKEffect);
+    /*testAbilityDamage(kennen, brand, kennenQstats, damageTypekennenq);
+    testDoTDamage(brand, kennen, brandqstats, damageTypekennenq);*/
     return 0;
 }

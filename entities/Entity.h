@@ -1,5 +1,7 @@
 // Entity.h
 #pragma once
+#include <string>
+
 #include "../damage/PreMitigationDamage.h"
 #include "Stats.h"
 
@@ -10,21 +12,23 @@ class Entity {
      * All entities have basic stats.
      */
 protected:
+    std::string name;
     Stats entity_stats;
-
 public:
     /*
      * Constructor for Entity.
      * Initializes the entity with the given basic stats.
      */
-    explicit Entity(const Stats& stats);
+    Entity(std::string name, const Stats &stats);
 
     //Basic stat HP getter
     [[nodiscard]] float getHP() const;
     //Basic stat current HP getter
     [[nodiscard]] float getCurrHP() const;
-    //Basic stat attack damage getter
-    [[nodiscard]] float getAD() const;
+    //Basic stat base attack damage getter
+    [[nodiscard]] float getBaseAD() const;
+    //Basic stat bonus attack damage getter
+    [[nodiscard]] float getBonusAD() const;
     //Basic stat ability power getter
     [[nodiscard]] float getAP() const;
     //Basic stat armor getter
@@ -57,17 +61,9 @@ public:
     [[nodiscard]] virtual float computeMagicReduction(const Entity& Source) const;
 
     /*
-     * Computes the damage done to the entity by an unmitigated auto attack.
+     * Computes the damage done to the entity by an unmitigated attack.
      */
-    [[nodiscard]] virtual DamageDone PostAutoAttack(const Entity& source, DamageDone& dmg_pre) = 0;
-
-    /*
-     * Computes the damage done to the entity by an unmitigated targeted ability.
-     */
-    [[nodiscard]] virtual DamageDone PostTargetedAbility(const Entity& source, DamageDone& dmg_pre) = 0;
-
-    [[nodiscard]] virtual DamageDone PostAoEAbility(const Entity& Source, DamageDone& dmg_pre) = 0;
-
+    [[nodiscard]] virtual DamageDone PostAttack(const Entity& source, DamageDone& dmg_pre) = 0;
 
     virtual ~Entity() = default;  // polymorphic destruction
 };

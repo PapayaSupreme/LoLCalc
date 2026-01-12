@@ -6,19 +6,23 @@ struct Stats {
      * Basic stats for entities.
      * All floats except level.
      */
-    float maxHP = 0.0f;
-    float currentHP = 0.0f;
-    float AD = 0.0f;
+    float max_HP = 0.0f;
+    float current_HP = 0.0f;
+    float base_AD = 0.0f;
+    float bonus_AD = 0.0f;
     float AP = 0.0f;
-    float armor = 0.0f;
-    float magicResist = 0.0f;
-    float attackSpeed = 0.0f;
-    float abilityHaste = 0.0f;
-    float critChance = 0.0f;
-    float movementSpeed = 0.0f;
+    float base_armor = 0.0f;
+    float bonus_armor = 0.0f;
+    float base_MR = 0.0f;
+    float bonus_MR = 0.0f;
+    float base_resource = 0.0f;
+    float bonus_resource = 0.0f;
+    float current_resource = 0.0f;
+    float attack_speed = 0.0f;
+    float ability_haste = 0.0f;
+    float crit_chance = 0.0f;
+    float MS = 0.0f;
     int level = 1;
-    //hidden stats
-    float attackRange = 0.0f;
 };
 
 struct ChampionStats {
@@ -26,64 +30,52 @@ struct ChampionStats {
      * Champion stats for entities.
      * All floats.
      */
-    float healthRegen = 0.0f;
-    float resourceRegen = 0.0f;
-    float healShieldPower = 0.0f;
+    float health_regen = 0.0f;
+    float resource_regen = 0.0f;
+    float heal_shield_power = 0.0f;
     float lethality = 0.0f;
-    float armorPen = 0.0f;
-    float magicPenFlat = 0.0f;
-    float magicPen = 0.0f;
-    float lifeSteal = 0.0f;
+    float armor_pen = 0.0f;
+    float magic_pen_flat = 0.0f;
+    float magic_pen = 0.0f;
+    float lifesteal = 0.0f;
     float omnivamp = 0.0f;
     float tenacity = 0.0f;
     //hidden stats
-    float spellVamp = 0.0f;
-    float critDamage = 0.0f;
-    float basicSpellsHaste = 0.0f;
-    float ultimateHaste = 0.0f;
-    float critDamageReduction = 0.0f;
+    float spell_vamp = 0.0f;
+    float AD_vamp = 0.0f;
+    float crit_damage = 0.0f;
+    float basic_spells_haste = 0.0f;
+    float ultimate_haste = 0.0f;
+    float crit_damage_reduction = 0.0f;
 };
-
-struct TargetedAbilityStats {
+// TODO: add ultimate bool ?
+struct RatiosStats {
     /*
-     * Targeted ability stats for entities.
+     * ability stats for entities.
      */
     float AD_ratio = 0.0f;
+    float base_AD_ratio = 0.0f;
     float AP_ratio = 0.0f;
-    float base_damage = 0.0f;
-    bool ultimate = false;
-    int cost = 0;
-    float cooldown = 0.0f;
-    int range = 0;
-    int channel = 0;
+    float health_ratio = 0.0f;
+    float armor_ratio = 0.0f;
+    float MR_ratio = 0.0f;
+    float target_max_health_ratio = 0.0f;
+    float target_current_health_ratio = 0.0f;
+    float mana_ratio = 0.0f;
+    float lethality_ratio = 0.0f;
 };
 
-struct AoEAbilityStats {
-    /*
-     * AoE ability stats for entities.
-     */
-    float AD_ratio = 0.0f;
-    float AP_ratio = 0.0f;
-    float base_damage = 0.0f;
-    bool ultimate = false;
-    int cost = 0;
-    float cooldown = 0.0f;
-    int range = 0;
-    int channel = 0;
-    int diameter = 0;//WIP i'll do more shapes than circles
-};
+enum class TermStat { AD_ratio, base_AD_ratio, bonus_AD_ratio, AP_ratio, health_ratio, base_health_ratio, bonus_health_ratio,
+    armor_ratio, base_armor_ratio, bonus_armor_ratio, MR_ratio, base_MR_ratio, bonus_MR_ratio,
+    target_max_health_ratio, target_current_health_ratio, target_missing_health_ratio,
+    mana_ratio, base_mana_ratio, bonus_mana_ratio, current_mana_ratio, lethality_ratio, armor_pen_ratio, level_ratio };
+
+struct Term { TermStat stat; float k; };
 
 struct DoTAbilityStats {
     /*
      * DoT ability stats for entities.
      */
-    float AD_ratio = 0.0f;
-    float AP_ratio = 0.0f;
-    float base_damage = 0.0f;
-    bool ultimate = false;
-    int cost = 0;
-    float cooldown = 0.0f;
-    int range = 0;
     float duration = 0.0f;
     float tick_rate = 0;// between 0.125, 0.25, 0.5, 1.0 seconds
 };

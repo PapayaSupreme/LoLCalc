@@ -13,11 +13,11 @@ add_executable(LoLCalc main.cpp
         damage/PreMitigationDamage.h
         damage/AutoAttack.cpp
         damage/AutoAttack.h
-        damage/TargetedAbility.cpp
-        damage/TargetedAbility.h
-        damage/AoEAbility.cpp
-        damage/AoEAbility.h
+        damage/Ability.cpp
+        damage/Ability.h
         test/testDamage.cpp
         test/testDamage.h
         damage/DoTAbility.cpp
-        damage/DoTAbility.h)
+        damage/DoTAbility.h
+        damage/Effect.cpp
+        damage/Effect.h)
