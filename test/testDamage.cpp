@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include "testDamage.h"
-#include "../damage/AutoAttack.h"
-#include "../entities/Champion.h"
+
+#include <array>
+
 #include "../damage/Effect.h"
-void testDamage(const Entity&source, const Entity& target, const DamageDone pre, const DamageDone post) {
+
+/*void testDamage(const Entity&source, const Entity& target, const DamageDone pre, const DamageDone post) {
     std::cout << "Raw Physical Damage: " << pre[0] << "\n";
     if (const auto* champSource = dynamic_cast<const Champion*>(&source)) {
         std::cout << "Source AD: " << champSource->getBaseAD() << "\n";
@@ -35,7 +37,7 @@ void testAutoAttackDamage(const Entity& source, Entity& target) {
 
     std::cout << "Ratios of this Attack: 100% AD \n";
     testDamage(source, target, pre, post);
-}
+}*/
 
 
 // === Effect Test ===

@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 
-#include "../damage/Effect.h"
 #include "../entities/Stats.h"
+#include "../damage/Effect.h"
 
 class Item {
 protected:

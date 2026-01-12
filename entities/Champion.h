@@ -4,7 +4,8 @@
 #include <vector>
 
 #include "Entity.h"
-#include "../damage/PreMitigationDamage.h"
+
+using DamageDone = std::array<float, 3>;
 
 class Effect;
 class Item;

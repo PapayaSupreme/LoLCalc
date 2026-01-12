@@ -2,8 +2,9 @@
 #pragma once
 #include <string>
 
-#include "../damage/PreMitigationDamage.h"
 #include "Stats.h"
+
+using DamageDone = std::array<float, 3>;
 
 class Entity {
     /*

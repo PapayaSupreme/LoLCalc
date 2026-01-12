@@ -25,6 +25,12 @@ struct Stats {
     int level = 1;
 };
 
+enum class DamageType : int {
+    Physical = 0,
+    Magical  = 1,
+    True     = 2
+};
+
 struct ChampionStats {
     /*
      * Champion stats for entities.

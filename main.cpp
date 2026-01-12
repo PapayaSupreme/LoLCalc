@@ -1,6 +1,5 @@
 #include <iostream>
 #include "entities/Champion.h"
-#include "damage/Ability.h"
 #include "damage/Effect.h"
 #include "loadout/Item.h"
 #include "test/testDamage.h"

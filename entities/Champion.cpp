@@ -1,5 +1,8 @@
 // Champion.cpp
 #include "Champion.h"
+
+#include <array>
+
 #include "../loadout/Item.h"
 
 Champion::Champion(std::string name, const Stats& stats, const ChampionStats& champion_stats)

@@ -9,16 +9,8 @@ add_executable(LoLCalc main.cpp
         entities/Stats.h
         entities/Champion.cpp
         entities/Champion.h
-        damage/PreMitigationDamage.cpp
-        damage/PreMitigationDamage.h
-        damage/AutoAttack.cpp
-        damage/AutoAttack.h
-        damage/Ability.cpp
-        damage/Ability.h
         test/testDamage.cpp
         test/testDamage.h
-        damage/DoTAbility.cpp
-        damage/DoTAbility.h
         damage/Effect.cpp
         damage/Effect.h
         loadout/Item.cpp

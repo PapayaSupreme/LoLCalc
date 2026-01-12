@@ -1,7 +1,10 @@
 #include "Effect.h"
 
+#include <array>
 #include <iostream>
 #include <utility>
+
+#include "../entities/Champion.h"
 
 Effect::Effect(std::string name, const EffectTrigger effect_trigger, const float base_dmg, std::vector<Term> terms, const float min_damage,
     const float max_damage, const float max_monster_damage, const float max_epic_monster_damage,

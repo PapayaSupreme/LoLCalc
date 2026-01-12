@@ -7,12 +7,12 @@
 
 #include "../entities/Stats.h"
 #include "../entities/Entity.h"
-#include "../entities/Champion.h"
-#include "PreMitigationDamage.h"
 
 enum class EffectTrigger : uint8_t {
     OnHit, OnCrit, OnAbilityHit
 };
+
+using DamageDone = std::array<float, 3>;
 
 class Effect {
 protected:
