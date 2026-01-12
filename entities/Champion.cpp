@@ -1,5 +1,6 @@
 // Champion.cpp
 #include "Champion.h"
+#include "../loadout/Item.h"
 
 Champion::Champion(std::string name, const Stats& stats, const ChampionStats& champion_stats)
     : Entity(std::move(name), stats), champion_stats(champion_stats) {}
@@ -27,7 +28,7 @@ void Champion::addLethality(const float lethality){ champion_stats.lethality += 
 void Champion::addArmorPen(const float armor_pen){ champion_stats.armor_pen += armor_pen; }
 void Champion::addLifesteal(const float lifesteal){ champion_stats.lifesteal += lifesteal; }
 
-void Champion::addOnHitEffect(const Effect &effect) { on_hit_effects.push_back(effect); }
+void Champion::addOnHitEffect(const Effect &effect) { on_hit_effects.push_back(&effect); }
 
 void Champion::removeLifeSteal(float lifesteal) { champion_stats.lifesteal -= lifesteal; }
 

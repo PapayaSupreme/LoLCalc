@@ -1,11 +1,13 @@
 // Champion.h
 #pragma once
 
+#include <vector>
+
 #include "Entity.h"
 #include "../damage/PreMitigationDamage.h"
-#include "../loadout/Item.h"
-#include "../damage/Effect.h"
 
+class Effect;
+class Item;
 class Champion : public Entity {
     /*
      * Class representing a champion in the game.
@@ -14,8 +16,8 @@ class Champion : public Entity {
      */
 protected:
     ChampionStats champion_stats;
-    std::vector<Effect> on_hit_effects;
-    std::vector<Effect> on_ability_hit_effects;
+    std::vector<const Effect*> on_hit_effects;
+    std::vector<const Effect*> on_ability_hit_effects;
 public:
     /*
      * Constructor for Champion.
