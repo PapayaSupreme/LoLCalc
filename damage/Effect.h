@@ -19,7 +19,7 @@ protected:
     const std::string name;
     const EffectTrigger effect_trigger;
     const float base_dmg;
-    const std::vector<Term> terms;
+    const std::vector<Ratio> ratios;
     const float min_damage;
     float max_damage = std::numeric_limits<float>::infinity();
     float max_monster_damage = std::numeric_limits<float>::infinity();
@@ -28,7 +28,7 @@ protected:
     const float magical_ratio;
     const float true_ratio;
 public:
-    Effect(std::string name, EffectTrigger effect_trigger, float base_dmg, std::vector<Term> terms, float min_damage, float max_damage,
+    Effect(std::string name, EffectTrigger effect_trigger, float base_dmg, std::vector<Ratio> terms, float min_damage, float max_damage,
     float max_monster_damage, float max_epic_monster_damage, float physical_ratio, float magical_ratio, float true_ratio);
 
     [[nodiscard]] std::string getName() const;

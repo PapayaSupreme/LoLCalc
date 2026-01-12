@@ -12,10 +12,10 @@ Champion::Champion(std::string name, const Stats& stats, const ChampionStats& ch
 float Champion::getHealthRegen() const {return champion_stats.health_regen;}
 float Champion::getResourceRegen() const {return champion_stats.resource_regen;}
 float Champion::getHealShieldPower() const {return champion_stats.heal_shield_power;}
-float Champion::getLethality() const {return champion_stats.lethality;}
-float Champion::getArmorPen() const {return champion_stats.armor_pen;}
-float Champion::getMagicPenFlat() const {return champion_stats.magic_pen_flat;}
-float Champion::getMagicPen() const {return champion_stats.magic_pen;}
+float Champion::get_lethality() const noexcept {return champion_stats.lethality;}
+float Champion::get_armor_pen() const noexcept {return champion_stats.armor_pen;}
+float Champion::get_magic_pen_flat() const noexcept {return champion_stats.magic_pen_flat;}
+float Champion::get_magic_pen() const noexcept {return champion_stats.magic_pen;}
 float Champion::getLifesteal() const {return champion_stats.lifesteal;}
 float Champion::getOmnivamp() const {return champion_stats.omnivamp;}
 float Champion::getTenacity() const {return champion_stats.tenacity;}

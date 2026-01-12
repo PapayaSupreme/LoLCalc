@@ -33,13 +33,13 @@ public:
     // Champion stat heal and shield power getter
     [[nodiscard]] float getHealShieldPower() const;
     // Champion stat lethality getter
-    [[nodiscard]] float getLethality() const;
+    [[nodiscard]] float get_lethality() const noexcept override;
     // Champion stat armor penetration getter
-    [[nodiscard]] float getArmorPen() const;
+    [[nodiscard]] float get_armor_pen() const noexcept override;
     // Champion stat magic penetration flat getter
-    [[nodiscard]] float getMagicPenFlat() const;
+    [[nodiscard]] float get_magic_pen_flat() const noexcept override;
     // Champion stat magic penetration getter
-    [[nodiscard]] float getMagicPen() const;
+    [[nodiscard]] float get_magic_pen() const noexcept override;
     // Champion stat life steal getter
     [[nodiscard]] float getLifesteal() const;
     // Champion stat omnivamp getter

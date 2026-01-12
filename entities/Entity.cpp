@@ -8,13 +8,13 @@
 Entity::Entity(std::string name, const Stats &stats)
     : name(std::move(name)), entity_stats(stats) {}
 
-float Entity::getHP() const {return entity_stats.max_HP;}
-float Entity::getCurrHP() const {return entity_stats.current_HP;}
+float Entity::getHP() const { return entity_stats.max_HP; }
+float Entity::getCurrHP() const { return entity_stats.current_HP; }
 float Entity::getBaseAD() const {return entity_stats.base_AD;}
 float Entity::getBonusAD() const {return entity_stats.bonus_AD;}
 float Entity::getAP() const {return entity_stats.AP;}
-float Entity::getArmor() const {return entity_stats.base_armor;}
-float Entity::getMR() const {return entity_stats.base_MR;}
+float Entity::getArmor() const {return entity_stats.base_armor + entity_stats.bonus_armor;}
+float Entity::getMR() const {return entity_stats.base_MR + entity_stats.bonus_MR;}
 float Entity::getAS() const {return entity_stats.attack_speed;}
 float Entity::getAH() const {return entity_stats.ability_haste;}
 float Entity::getCrit() const {return entity_stats.crit_chance;}
@@ -36,8 +36,8 @@ float Entity::computeArmorReduction(const Entity& Source) const {
     float temp_armor = this->getArmor();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_armor >= 0) {
-            temp_armor *= 1.0f - champSource->getArmorPen()/100;
-            temp_armor -= champSource->getLethality();
+            temp_armor *= 1.0f - champSource->get_armor_pen()/100;
+            temp_armor -= champSource->get_lethality();
         }
     }
     float reduction;
@@ -53,8 +53,8 @@ float Entity::computeMagicReduction(const Entity& Source) const {
     float temp_mr = this->getMR();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_mr >= 0) {
-            temp_mr *= 1.0f - champSource->getMagicPen()/100;
-            temp_mr -= champSource->getMagicPenFlat();
+            temp_mr *= 1.0f - champSource->get_magic_pen()/100;
+            temp_mr -= champSource->get_magic_pen_flat();
         }
     }
     float reduction;

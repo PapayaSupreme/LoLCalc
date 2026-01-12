@@ -77,7 +77,7 @@ enum class TermStat { total_AD, base_AD, bonus_AD, AP, total_health, base_health
     total_mana, base_mana, bonus_mana, current_mana, lethality, armor_pen, level,
     omnivamp, lifesteal, health_regen, mana_regen, ability_haste};
 
-struct Term { TermStat stat; float k; };
+struct Ratio { TermStat stat; float k; };
 
 struct DoTAbilityStats {
     /*

@@ -22,6 +22,11 @@ public:
      */
     Entity(std::string name, const Stats &stats);
 
+    [[nodiscard]] virtual float get_armor_pen() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float get_lethality() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float get_magic_pen() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float get_magic_pen_flat() const noexcept { return 0.f; }
+
     //Basic stat HP getter
     [[nodiscard]] float getHP() const;
     //Basic stat current HP getter

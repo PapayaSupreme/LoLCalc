@@ -8,11 +8,11 @@
 class Item {
 protected:
     const std::string name;
-    const std::vector<Term> stats;
+    const std::vector<Ratio> stats;
     const std::vector<Effect> effects;
 public:
-    Item(std::string name, std::vector<Term> terms, std::vector<Effect> effects);
+    Item(std::string name, std::vector<Ratio> terms, std::vector<Effect> effects);
 
-    [[nodiscard]] std::vector<Term> getStats() const;
-    [[nodiscard]] std::vector<Effect> getEffects() const;
+    [[nodiscard]] const std::vector<Ratio>& getStats() const;
+    [[nodiscard]] const std::vector<Effect>& getEffects() const;
 };
