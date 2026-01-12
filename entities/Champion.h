@@ -17,8 +17,8 @@ class Champion : public Entity {
      */
 protected:
     ChampionStats champion_stats;
-    std::vector<Effect> on_hit_effects;
-    std::vector<Effect> on_ability_hit_effects;
+    std::vector<const Effect*> on_hit_effects;
+    std::vector<const Effect*> on_ability_hit_effects;
 public:
     /*
      * Constructor for Champion.
@@ -41,33 +41,44 @@ public:
     // Champion stat magic penetration getter
     [[nodiscard]] float get_magic_pen() const noexcept override;
     // Champion stat life steal getter
-    [[nodiscard]] float getLifesteal() const;
+    [[nodiscard]] float get_lifesteal() const noexcept;
     // Champion stat omnivamp getter
-    [[nodiscard]] float getOmnivamp() const;
+    [[nodiscard]] float get_omnivamp() const noexcept;
     // Champion stat tenacity getter
-    [[nodiscard]] float getTenacity() const;
+    [[nodiscard]] float get_tenacity() const noexcept;
     // Champion stat spell vampirism getter
-    [[nodiscard]] float getSpellVamp() const;
+    [[nodiscard]] float get_spell_vamp() const noexcept;
     // Champion stat critical damage multiplier getter
-    [[nodiscard]] float getCritDamage() const;
+    [[nodiscard]] float get_crit_damage() const noexcept;
     // Champion stat basic ability haste getter
-    [[nodiscard]] float getBasicAbilityHaste() const;
+    [[nodiscard]] float get_basic_AH() const noexcept;
     // Champion stat ultimate ability haste getter
-    [[nodiscard]] float getUltimateHaste() const;
+    [[nodiscard]] float get_ultimate_AH() const noexcept;
     // Champion stat critical damage reduction getter
-    [[nodiscard]] float getCritDamageReduction() const;
+    [[nodiscard]] float get_crit_damage_reduction() const noexcept;
     // Champion stat list getter
     [[nodiscard]] const ChampionStats& getChampionStats() const;
-    [[nodiscard]] std::vector<const Effect *> getOnHitEffects() const;
+    [[nodiscard]] const std::vector<const Effect*>& get_on_hit_effects() const;
+    [[nodiscard]] const std::vector<const Effect*>& get_on_ability_hit_effects() const;
 
+    void add_omnivamp(float omnivamp) noexcept;
+    void add_lifesteal(float lifesteal) noexcept;
+    void add_spell_vamp(float spell_vamp) noexcept;
+    void add_lethality(float lethality) noexcept;
+    void add_armor_pen(float armor_pen) noexcept;
+    void add_magic_pen(float magic_pen) noexcept;
+    void add_magic_pen_flat(float magic_pen_flat) noexcept;
 
-    void addLethality(float lethality);
-    void addArmorPen(float armor_pen);
-    void addLifesteal(float lifesteal);
+    void add_on_hit_effect(const Effect& effect);
+    void add_on_ability_hit_effect(const Effect& effect);
 
-    void addOnHitEffect(const Effect& effect);
-
-    void remove_lifesteal(float lifesteal);
+    void remove_omnivamp(float omnivamp) noexcept;
+    void remove_lifesteal(float lifesteal) noexcept;
+    void remove_spell_vamp(float spell_vamp) noexcept;
+    void remove_armor_pen(float armor_pen) noexcept;
+    void remove_lethality(float lethality) noexcept;
+    void remove_magic_pen(float magic_pen) noexcept;
+    void remove_magic_pen_flat(float magic_pen_flat) noexcept;
 
 
     /*

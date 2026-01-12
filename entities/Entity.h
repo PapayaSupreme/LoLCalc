@@ -28,39 +28,39 @@ public:
     [[nodiscard]] virtual float get_magic_pen_flat() const noexcept { return 0.f; }
 
     //Basic stat HP getter
-    [[nodiscard]] float getHP() const;
+    [[nodiscard]] float get_HP() const noexcept;
     //Basic stat current HP getter
-    [[nodiscard]] float getCurrHP() const;
+    [[nodiscard]] float get_current_HP() const noexcept;
     //Basic stat base attack damage getter
-    [[nodiscard]] float getBaseAD() const;
+    [[nodiscard]] float get_base_AD() const noexcept;
     //Basic stat bonus attack damage getter
-    [[nodiscard]] float getBonusAD() const;
+    [[nodiscard]] float get_bonus_AD() const noexcept;
     //Basic stat ability power getter
-    [[nodiscard]] float getAP() const;
+    [[nodiscard]] float get_AP() const noexcept;
     //Basic stat armor getter
-    [[nodiscard]] float getArmor() const;
+    [[nodiscard]] float get_armor() const noexcept;
     //Basic stat magic resistance getter
-    [[nodiscard]] float getMR() const;
+    [[nodiscard]] float get_MR() const noexcept;
     //Basic stat attack speed getter
-    [[nodiscard]] float getAS() const;
+    [[nodiscard]] float get_AS() const;
     //Basic stat ability haste getter
-    [[nodiscard]] float getAH() const;
+    [[nodiscard]] float get_AH() const noexcept;
     //Basic stat critical strike chance getter
-    [[nodiscard]] float getCrit() const;
+    [[nodiscard]] float get_crit_chance() const noexcept;
     //Basic stat move speed getter
-    [[nodiscard]] float getMS() const;
+    [[nodiscard]] float get_MS() const noexcept;
     //Basic stat level getter
-    [[nodiscard]] int getLevel() const;
+    [[nodiscard]] int get_level() const noexcept;
     //Basic stat list getter
     [[nodiscard]] const Stats& getStats() const;
 
-    void addBonusAD(float bonus_AD);
-    void addBonusArmor(float bonus_armor);
-    void addBonusMR(float bonus_MR);
-    void addBonusAS(float bonus_AS);
-    void addAP(float AP);
-    void addBonusHealth(float bonus_health);
-    void addBonusMana(float bonus_mana);
+    void add_bonus_AD(float bonus_AD) noexcept;
+    void add_bonus_armor(float bonus_armor) noexcept;
+    void add_bonus_MR(float bonus_MR) noexcept;
+    void add_AS(float AS) noexcept;
+    void add_AP(float AP) noexcept;
+    void add_bonus_health(float bonus_health) noexcept;
+    void add_bonus_mana(float bonus_mana) noexcept;
 
     /*
      * Computes the damage done to the entity after applying armor from an amount.
