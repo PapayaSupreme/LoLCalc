@@ -45,10 +45,16 @@ public:
     [[nodiscard]] float getMS() const;
     //Basic stat level getter
     [[nodiscard]] int getLevel() const;
-    //Basic stat attack range getter
-    [[nodiscard]] float getAttackRange() const;
     //Basic stat list getter
     [[nodiscard]] const Stats& getStats() const;
+
+    void addBonusAD(float bonus_AD);
+    void addBonusArmor(float bonus_armor);
+    void addBonusMR(float bonus_MR);
+    void addBonusAS(float bonus_AS);
+    void addAP(float AP);
+    void addBonusHealth(float bonus_health);
+    void addBonusMana(float bonus_mana);
 
     /*
      * Computes the damage done to the entity after applying armor from an amount.

@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 #include "../damage/PreMitigationDamage.h"
+#include "../loadout/Item.h"
+#include "../damage/Effect.h"
 
 class Champion : public Entity {
     /*
@@ -12,6 +14,8 @@ class Champion : public Entity {
      */
 protected:
     ChampionStats champion_stats;
+    std::vector<Effect> on_hit_effects;
+    std::vector<Effect> on_ability_hit_effects;
 public:
     /*
      * Constructor for Champion.
@@ -34,7 +38,7 @@ public:
     // Champion stat magic penetration getter
     [[nodiscard]] float getMagicPen() const;
     // Champion stat life steal getter
-    [[nodiscard]] float getLifeSteal() const;
+    [[nodiscard]] float getLifesteal() const;
     // Champion stat omnivamp getter
     [[nodiscard]] float getOmnivamp() const;
     // Champion stat tenacity getter
@@ -53,8 +57,22 @@ public:
     [[nodiscard]] const ChampionStats& getChampionStats() const;
 
 
+    void addLethality(float lethality);
+    void addArmorPen(float armor_pen);
+    void addLifesteal(float lifesteal);
+
+    void addOnHitEffect(const Effect& effect);
+
+    void removeLifeSteal(float lifesteal);
+
+
     /*
      * Computes the damage done to the champion by an unmitigated attack.
      */
     [[nodiscard]] DamageDone PostAttack(const Entity& Source, DamageDone& dmg_pre) override;
+
+    /*
+     * Adds an item, its stats and its  effects to a champion
+     */
+    void BuyItem(const Item& item);
 };

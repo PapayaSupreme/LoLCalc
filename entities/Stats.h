@@ -65,10 +65,11 @@ struct RatiosStats {
     float lethality_ratio = 0.0f;
 };
 
-enum class TermStat { AD_ratio, base_AD_ratio, bonus_AD_ratio, AP_ratio, health_ratio, base_health_ratio, bonus_health_ratio,
-    armor_ratio, base_armor_ratio, bonus_armor_ratio, MR_ratio, base_MR_ratio, bonus_MR_ratio,
-    target_max_health_ratio, target_current_health_ratio, target_missing_health_ratio,
-    mana_ratio, base_mana_ratio, bonus_mana_ratio, current_mana_ratio, lethality_ratio, armor_pen_ratio, level_ratio };
+enum class TermStat { total_AD, base_AD, bonus_AD, AP, total_health, base_health, bonus_health,
+    total_armor, base_armor, bonus_armor, total_MR, base_MR, bonus_MR, total_AS, base_AS, bonus_AS,
+    target_max_health, target_current_health, target_missing_health,
+    total_mana, base_mana, bonus_mana, current_mana, lethality, armor_pen, level,
+    omnivamp, lifesteal, health_regen, mana_regen};
 
 struct Term { TermStat stat; float k; };
 

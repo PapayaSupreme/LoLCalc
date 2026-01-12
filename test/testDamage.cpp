@@ -40,7 +40,7 @@ void testAutoAttackDamage(const Entity& source, Entity& target) {
 
 // === Effect Test ===
 void testEffectDamage(const Entity& source, Entity& target, const Effect& effect) {
-    DamageDone pre = effect.ComputePremitigationDamage(source, target);
+    DamageDone pre = effect.computePremitigationDamage(source, target);
     const DamageDone post = target.PostAttack(source, pre);
     std::cout << "DMG CALCULATION - Damage pre on target: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n";
     std::cout << "DMG CALCULATION - Damage post on target: " << post[0] << " " << post[1] << " " << post[2] << "\n\n\n";

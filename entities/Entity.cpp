@@ -22,6 +22,16 @@ float Entity::getMS() const {return entity_stats.MS;}
 int Entity::getLevel() const {return entity_stats.level;}
 const Stats& Entity::getStats() const {return entity_stats;}
 
+void Entity::addBonusAD(const float bonus_AD) { entity_stats.bonus_AD += bonus_AD; }
+void Entity::addBonusArmor(const float bonus_armor) { entity_stats.bonus_armor += bonus_armor; }
+void Entity::addBonusMR(const float bonus_MR) { entity_stats.bonus_MR += bonus_MR; }
+void Entity::addBonusAS(const float bonus_AS) { entity_stats.attack_speed += bonus_AS; }
+void Entity::addAP(const float AP) { entity_stats.AP += AP; }
+void Entity::addBonusHealth(const float bonus_health) { entity_stats.max_HP += bonus_health; }
+void Entity::addBonusMana(const float bonus_mana) { entity_stats.bonus_resource += bonus_mana; }
+
+
+
 float Entity::computeArmorReduction(const Entity& Source) const {
     float temp_armor = this->getArmor();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
