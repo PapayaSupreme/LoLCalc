@@ -13,6 +13,7 @@ Effect::Effect(std::string name, const EffectTrigger effect_trigger, const float
       max_monster_damage(max_monster_damage), max_epic_monster_damage(max_epic_monster_damage), //TODO: add max dmg to monters logic
       physical_ratio(physical_ratio), magical_ratio(magical_ratio), true_ratio(true_ratio) {}
 
+std::string Effect::getName() const { return name; }
 EffectTrigger Effect::getEffectTrigger() const { return effect_trigger; }
 
 DamageDone Effect::computePremitigationDamage(const Entity& source, const Entity& target) const {

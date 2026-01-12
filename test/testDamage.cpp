@@ -33,7 +33,7 @@
 void testAutoAttackDamage(const Entity& source, Entity& target) {
     const AutoAttack auto_attack = AutoAttack(source, target);
     DamageDone pre = auto_attack.computePremitigationDamage();
-    const DamageDone post = target.PostAttack(source, pre);
+    const DamageDone post = target.post_attack(source, pre);
 
     std::cout << "Ratios of this Attack: 100% AD \n";
     testDamage(source, target, pre, post);
@@ -43,7 +43,7 @@ void testAutoAttackDamage(const Entity& source, Entity& target) {
 // === Effect Test ===
 void testEffectDamage(const Entity& source, Entity& target, const Effect& effect) {
     DamageDone pre = effect.computePremitigationDamage(source, target);
-    const DamageDone post = target.PostAttack(source, pre);
+    const DamageDone post = target.post_attack(source, pre);
     std::cout << "DMG CALCULATION - Damage pre on target: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n";
     std::cout << "DMG CALCULATION - Damage post on target: " << post[0] << " " << post[1] << " " << post[2] << "\n\n\n";
 }

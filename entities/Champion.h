@@ -17,8 +17,8 @@ class Champion : public Entity {
      */
 protected:
     ChampionStats champion_stats;
-    std::vector<const Effect*> on_hit_effects;
-    std::vector<const Effect*> on_ability_hit_effects;
+    std::vector<Effect> on_hit_effects;
+    std::vector<Effect> on_ability_hit_effects;
 public:
     /*
      * Constructor for Champion.
@@ -58,6 +58,7 @@ public:
     [[nodiscard]] float getCritDamageReduction() const;
     // Champion stat list getter
     [[nodiscard]] const ChampionStats& getChampionStats() const;
+    [[nodiscard]] std::vector<const Effect *> getOnHitEffects() const;
 
 
     void addLethality(float lethality);
@@ -66,16 +67,18 @@ public:
 
     void addOnHitEffect(const Effect& effect);
 
-    void removeLifeSteal(float lifesteal);
+    void remove_lifesteal(float lifesteal);
 
 
     /*
      * Computes the damage done to the champion by an unmitigated attack.
      */
-    [[nodiscard]] DamageDone PostAttack(const Entity& Source, DamageDone& dmg_pre) override;
+    [[nodiscard]] DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) override;
+
+    [[nodiscard]] DamageDone attack(Entity& target, const Effect& effect) const;
 
     /*
      * Adds an item, its stats and its  effects to a champion
      */
-    void BuyItem(const Item& item);
+    void buy_item(const Item& item);
 };

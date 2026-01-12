@@ -1,4 +1,6 @@
+#include <array>
 #include <iostream>
+
 #include "entities/Champion.h"
 #include "damage/Effect.h"
 #include "loadout/Item.h"
@@ -10,7 +12,7 @@ int main() {
         .max_HP = 1000,
         .current_HP = 1000,
         .base_AD = 68,
-        .bonus_AD = 51
+        .bonus_AD = 11
     };
     ChampionStats sionExtras = {
         .lethality = 0.0f,
@@ -21,7 +23,7 @@ int main() {
     Champion sion("Sion", sionStats, sionExtras);
 
 
-    Effect AutoAttackEffect("Auto Attack", EffectTrigger::OnHit, 0.0f,
+    Effect AutoAttackEffect("Auto attack", EffectTrigger::OnHit, 0.0f,
                                   {{TermStat::total_AD, 1}},
                                   0.0f, std::numeric_limits<float>::infinity(),
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
@@ -43,10 +45,16 @@ int main() {
     Item BORK("Blade of the Ruined King",
         {{TermStat::bonus_AD, 40}, {TermStat::bonus_AS, 25}, {TermStat::lifesteal, 10}},
         {MistsEdge});
+    Item Serylda("Serylda's Grudge",
+        {{TermStat::bonus_AD, 45}, {TermStat::armor_pen, 35}, {TermStat::ability_haste, 15}},
+        {});
     //testAutoAttackDamage(sion, brand);
-    testEffectDamage(sion, brand, AutoAttackEffect);
-    testEffectDamage(sion, brand, MistsEdge);
-    /*testAbilityDamage(kennen, brand, kennenQstats, damageTypekennenq);
-    testDoTDamage(brand, kennen, brandqstats, damageTypekennenq);*/
+    DamageDone post = {};
+    //testEffectDamage(sion, brand, AutoAttackEffect);
+    //testEffectDamage(sion, brand, MistsEdge);
+    //post = sion.attack(brand, AutoAttackEffect);
+    sion.buy_item(BORK);
+    sion.buy_item(Serylda);
+    post = sion.attack(brand, AutoAttackEffect);
     return 0;
 }

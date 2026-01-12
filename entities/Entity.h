@@ -70,7 +70,7 @@ public:
     /*
      * Computes the damage done to the entity by an unmitigated attack.
      */
-    [[nodiscard]] virtual DamageDone PostAttack(const Entity& source, DamageDone& dmg_pre) = 0;
+    [[nodiscard]] virtual DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) = 0;
 
     virtual ~Entity() = default;  // polymorphic destruction
 };

@@ -8,7 +8,7 @@ using DamageDone = std::array<float, 3>;
 class Entity;
 class Effect;
 
-// === Auto Attack Test ===
+// === Auto attack Test ===
 //void testAutoAttackDamage(const Entity& source, Entity& target);
 
 void testEffectDamage(const Entity& source, Entity& target, const Effect& effect);

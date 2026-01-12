@@ -36,7 +36,7 @@ float Entity::computeArmorReduction(const Entity& Source) const {
     float temp_armor = this->getArmor();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_armor >= 0) {
-            temp_armor *= 1.0f - champSource->getArmorPen();
+            temp_armor *= 1.0f - champSource->getArmorPen()/100;
             temp_armor -= champSource->getLethality();
         }
     }
@@ -53,7 +53,7 @@ float Entity::computeMagicReduction(const Entity& Source) const {
     float temp_mr = this->getMR();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_mr >= 0) {
-            temp_mr *= 1.0f - champSource->getMagicPen();
+            temp_mr *= 1.0f - champSource->getMagicPen()/100;
             temp_mr -= champSource->getMagicPenFlat();
         }
     }

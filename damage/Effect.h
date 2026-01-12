@@ -31,6 +31,7 @@ public:
     Effect(std::string name, EffectTrigger effect_trigger, float base_dmg, std::vector<Term> terms, float min_damage, float max_damage,
     float max_monster_damage, float max_epic_monster_damage, float physical_ratio, float magical_ratio, float true_ratio);
 
+    [[nodiscard]] std::string getName() const;
     [[nodiscard]] EffectTrigger getEffectTrigger() const;
     [[nodiscard]] DamageDone computePremitigationDamage(const Entity& source, const Entity& target) const;
 };
