@@ -1,13 +1,11 @@
 #include <array>
-#include <iostream>
 
 #include "entities/Champion.h"
 #include "damage/Effect.h"
 #include "loadout/Item.h"
-#include "test/testDamage.h"
 
 int main() {
-    // === Champion Setup ===
+    // === Source Setup ===
     Stats sionStats = {
         .max_HP = 1000,
         .current_HP = 1000,
@@ -18,11 +16,16 @@ int main() {
         .lethality = 0.0f,
         .armor_pen = 0.0f
     };
-
-
     Champion sion("Sion", sionStats, sionExtras);
 
+    // === Target Setup ===
+    Stats vayneStats = sionStats;
+    vayneStats.base_armor = 50;
+    vayneStats.base_MR = 50;
+    ChampionStats vayneExtras = {};
+    Champion vayne("Vayne", vayneStats, vayneExtras);
 
+    // === Effects Setup ===
     Effect AutoAttackEffect("Auto attack", EffectTrigger::OnHit, 0.0f,
                                   {{TermStat::total_AD, 1}},
                                   0.0f, std::numeric_limits<float>::infinity(),
@@ -35,12 +38,7 @@ int main() {
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
                                   1.0f, 0.0f, 0.0f);
 
-    Stats brandStats = sionStats;
-    brandStats.base_armor = 50;
-    brandStats.base_MR = 50;
-    ChampionStats brandExtras = {};
-    Champion brand("Brand", brandStats, brandExtras);  // simulate brand as target
-
+    // === Items Setup ===
     Item LongSword("Long Sword", {{TermStat::bonus_AD, 10}}, {{}});
     Item BORK("Blade of the Ruined King",
         {{TermStat::bonus_AD, 40}, {TermStat::bonus_AS, 25}, {TermStat::lifesteal, 10}},
@@ -48,13 +46,45 @@ int main() {
     Item Serylda("Serylda's Grudge",
         {{TermStat::bonus_AD, 45}, {TermStat::armor_pen, 35}, {TermStat::ability_haste, 15}},
         {});
-    //testAutoAttackDamage(sion, brand);
-    DamageDone post = {};
-    //testEffectDamage(sion, brand, AutoAttackEffect);
-    //testEffectDamage(sion, brand, MistsEdge);
-    //post = sion.attack(brand, AutoAttackEffect);
+
+    //buy
     sion.buy_item(BORK);
     sion.buy_item(Serylda);
-    post = sion.attack(brand, AutoAttackEffect);
+
+    DamageDone post = {};
+    //testEffectDamage(sion, vayne, AutoAttackEffect);
+    //testEffectDamage(sion, vayne, MistsEdge);
+    post = sion.attack(vayne, AutoAttackEffect);
+    post = sion.attack(vayne, AutoAttackEffect);
+
+    /*
+    constexpr int WARMUP = 10'000;
+    constexpr int ITERS  = 1'000'000;
+
+    // --- WARMUP ---
+    for (int i = 0; i < WARMUP; ++i) {
+        auto dmg = sion.attack(vayne, AutoAttackEffect);
+        sink += dmg[0] + dmg[1] + dmg[2];
+    }
+
+    // --- TIMED SECTION ---
+    const auto start = std::chrono::steady_clock::now();
+
+    for (int i = 0; i < ITERS; ++i) {
+        auto dmg = sion.attack(vayne, AutoAttackEffect);
+        sink += dmg[0] + dmg[1] + dmg[2];
+    }
+
+    const auto end = std::chrono::steady_clock::now();
+
+    const auto total_ns =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+
+    std::cout << "Total: " << total_ns << " ns\n";
+    std::cout << "Avg per attack: "
+              << static_cast<double>(total_ns) / ITERS
+              << " ns\n";
+    std::cout << "sink: " << sink << "\n";
+    */
     return 0;
 }

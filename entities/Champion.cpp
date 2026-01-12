@@ -2,7 +2,7 @@
 #include "Champion.h"
 
 #include <array>
-#include <iostream>
+//#include <iostream>
 
 #include "../loadout/Item.h"
 
@@ -64,21 +64,19 @@ DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
 DamageDone Champion::attack(Entity& target, const Effect& effect) const {
     DamageDone pre = effect.computePremitigationDamage(*this, target);
     DamageDone post = {};
-    std::cout << "Primary effect dmg: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+    //std::cout << "Primary effect dmg: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     switch (effect.getEffectTrigger()) {
         case EffectTrigger::OnHit: {
-            DamageDone temp {};
-
             for (const Effect* e: on_hit_effects) {
-                temp = e->computePremitigationDamage(*this, target);
-                std::cout << e->getName() << " dmg: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                DamageDone temp = e->computePremitigationDamage(*this, target);
+                //std::cout << e->getName() << " dmg: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                 for (int i = 0; i < 3; ++i) {
                     pre[i] += temp[i];
                 }
             }
-            std::cout << "attack dmg pre: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+            //std::cout << "attack dmg pre: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
             post = target.post_attack(*this, pre);
-            std::cout << "attack dmg post: " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
+            //std::cout << "attack dmg post: " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
             break;
         }
         case EffectTrigger::OnCrit:
