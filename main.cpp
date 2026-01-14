@@ -39,15 +39,21 @@ int main() {
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
                                   1.0f, 0.0f, 0.0f);
 
-    Effect PTAProc("Press The Attack Proc", EffectTrigger::OnToggle, 40.0f,
+    Effect PTAProc("Press The Attack Proc", EffectTrigger::OnActivate, 40.0f,
                                   {{TermStat::level, 7.06}},
                                   0.0f, std::numeric_limits<float>::infinity(),
                                   0.0f, 0.0f,
                                   1.0f, 0.0f, 0.0f); // TODO: turn into adaptive dmg
 
+    Effect PTA("Press The Attack", EffectTrigger::OnToggle, 10000.0f,
+                              {{TermStat::level, 0.0f}},
+                              0.0f, std::numeric_limits<float>::infinity(),
+                              0.0f, 0.0f,
+                              1.0f, 0.0f, 0.0f);
+
     // === Stacks Setup ===
 
-    Stack PTAStack("Press The Attack Stack", EffectTrigger::OnAttack, std::map<uint16_t, const Effect*> {{3, &PTAProc}}, true);
+    Stack PTAStack("Press The Attack Stack", EffectTrigger::OnAttack, std::multimap<uint16_t, const Effect*> {{3, &PTAProc}, {3, &PTA}}, true);
     // === Items Setup ===
     Item LongSword("Long Sword", {{TermStat::bonus_AD, 10}}, {{}});
     Item BORK("Blade of the Ruined King",
@@ -65,6 +71,7 @@ int main() {
     DamageDone post = {};
     //testEffectDamage(sion, vayne, AutoAttackEffect);
     //testEffectDamage(sion, vayne, MistsEdge);
+    post = sion.attack(vayne, AutoAttackEffect);
     post = sion.attack(vayne, AutoAttackEffect);
     post = sion.attack(vayne, AutoAttackEffect);
     post = sion.attack(vayne, AutoAttackEffect);

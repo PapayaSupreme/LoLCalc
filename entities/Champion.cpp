@@ -70,7 +70,7 @@ DamageDone Champion::attack(Entity& target, const Effect &effect) const {
     DamageDone pre = effect.computePremitigationDamage(*this, target);
     DamageDone post = {};
     std::vector<const Effect *> es = on_attack_effects;
-    std::vector<Stack *> ss = on_attack_stacks;
+    const std::vector<Stack *> ss = on_attack_stacks;
     std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     switch (effect.getEffectTrigger()) {
         case EffectTrigger::OnHit: es.insert(es.end(), on_hit_effects.begin(), on_hit_effects.end()); break;
@@ -78,6 +78,7 @@ DamageDone Champion::attack(Entity& target, const Effect &effect) const {
         case EffectTrigger::OnCrit:
         case EffectTrigger::OnToggle:
         case EffectTrigger::OnAttack:
+        case EffectTrigger::OnActivate:
             break;
     }
     for (const Effect* e: es) {
@@ -89,10 +90,24 @@ DamageDone Champion::attack(Entity& target, const Effect &effect) const {
     }
     std::cout << "All effects dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     for (Stack* s : ss) {
-        if (const Effect *effect_maybe = s->add_entity_stack_count(&target); effect_maybe != nullptr) {
-            es.push_back(effect_maybe);
-            std::cout << s->get_name() << " has proc " << effect_maybe->getName() << " while having "
-            << s->get_entities_stack_count().find(&target)->second << " stacks\n";
+        if (std::vector<const Effect *>effect_maybe = s->add_entity_stack_count(&target); !effect_maybe.empty()) {
+            for (const Effect* e : effect_maybe) {
+                if (e->getEffectTrigger() == EffectTrigger::OnActivate) {
+                    DamageDone temp = e->computePremitigationDamage(*this, target);
+                    std::cout << e->getName() << " dmg: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                    for (int i = 0; i < 3; ++i) {
+                        pre[i] += temp[i];
+                    }
+                    std::cout << s->get_name() << " has proc onActivate" << e->getName() << " while having "
+                    << s->get_entities_stack_count().find(&target)->second << " stacks\n";
+                } else if (e->getEffectTrigger() == EffectTrigger::OnToggle && std::ranges::find(es, e) == es.end()) {
+                    std::cout << s->get_name() << " has proc onToggle" << e->getName() << " while having "
+                    << s->get_entities_stack_count().find(&target)->second << " stacks\n";
+                    es.push_back(e);
+                } else {
+                    std::cout << "case of stack proc not done\n";
+                }
+            }
         }
         std::cout << s->get_name() << " has " << s->get_entities_stack_count().find(&target)->second << " stacks on "
         << target.get_name() << "\n";
@@ -124,6 +139,7 @@ void Champion::buy_item(const Item& item) {
             case EffectTrigger::OnAbilityHit:
             case EffectTrigger::OnAttack:
             case EffectTrigger::OnToggle:
+            case EffectTrigger::OnActivate:
                 break;
         }
     }
