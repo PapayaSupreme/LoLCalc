@@ -3,14 +3,10 @@
 #include <vector>
 #include <limits>
 #include <algorithm>
-#include <cstdint>
 
-#include "../entities/Stats.h"
 #include "../entities/Entity.h"
-
-enum class EffectTrigger : uint8_t {
-    OnHit, OnCrit, OnAbilityHit
-};
+#include "../structs/EffectTrigger.h"
+#include "../structs/Ratio.h"
 
 using DamageDone = std::array<float, 3>;
 

@@ -14,4 +14,10 @@ add_executable(LoLCalc main.cpp
         damage/Effect.cpp
         damage/Effect.h
         loadout/Item.cpp
-        loadout/Item.h)
+        loadout/Item.h
+        damage/Stack.cpp
+        damage/Stack.h
+        structs/EffectTrigger.h
+        structs/TermStat.h
+        structs/Ratio.h
+)

@@ -2,6 +2,7 @@
 
 #include "entities/Champion.h"
 #include "damage/Effect.h"
+#include "damage/Stack.h"
 #include "loadout/Item.h"
 
 int main() {
@@ -38,6 +39,15 @@ int main() {
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
                                   1.0f, 0.0f, 0.0f);
 
+    Effect PTAProc("Press The Attack Proc", EffectTrigger::OnToggle, 40.0f,
+                                  {{TermStat::level, 7.06}},
+                                  0.0f, std::numeric_limits<float>::infinity(),
+                                  0.0f, 0.0f,
+                                  1.0f, 0.0f, 0.0f); // TODO: turn into adaptive dmg
+
+    // === Stacks Setup ===
+
+    Stack PTAStack("Press The Attack Stack", EffectTrigger::OnAttack, std::map<uint16_t, const Effect*> {{3, &PTAProc}}, true);
     // === Items Setup ===
     Item LongSword("Long Sword", {{TermStat::bonus_AD, 10}}, {{}});
     Item BORK("Blade of the Ruined King",
@@ -50,10 +60,12 @@ int main() {
     //buy
     sion.buy_item(BORK);
     sion.buy_item(Serylda);
+    sion.add_on_attack_stack(PTAStack);
 
     DamageDone post = {};
     //testEffectDamage(sion, vayne, AutoAttackEffect);
     //testEffectDamage(sion, vayne, MistsEdge);
+    post = sion.attack(vayne, AutoAttackEffect);
     post = sion.attack(vayne, AutoAttackEffect);
     post = sion.attack(vayne, AutoAttackEffect);
 

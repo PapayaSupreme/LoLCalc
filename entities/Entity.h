@@ -1,9 +1,9 @@
-// Entity.h
 #pragma once
 #include <string>
 
 #include "Stats.h"
 
+class Effect;
 using DamageDone = std::array<float, 3>;
 
 class Entity {
@@ -27,6 +27,8 @@ public:
     [[nodiscard]] virtual float get_magic_pen() const noexcept { return 0.f; }
     [[nodiscard]] virtual float get_magic_pen_flat() const noexcept { return 0.f; }
 
+    //name getter
+    [[nodiscard]] std::string get_name() const noexcept;
     //Basic stat HP getter
     [[nodiscard]] float get_HP() const noexcept;
     //Basic stat current HP getter
@@ -76,6 +78,8 @@ public:
      * Computes the damage done to the entity by an unmitigated attack.
      */
     [[nodiscard]] virtual DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) = 0;
+
+    //[[nodiscard]] virtual DamageDone attack(const Champion *target, const Effect &effect) const = 0;
 
     virtual ~Entity() = default;  // polymorphic destruction
 };

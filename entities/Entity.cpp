@@ -8,6 +8,7 @@
 Entity::Entity(std::string name, const Stats &stats)
     : name(std::move(name)), entity_stats(stats) {}
 
+std::string Entity::get_name() const noexcept { return name; }
 float Entity::get_HP() const noexcept { return entity_stats.max_HP; }
 float Entity::get_current_HP() const noexcept { return entity_stats.current_HP; }
 float Entity::get_base_AD() const noexcept {return entity_stats.base_AD;}

@@ -46,7 +46,7 @@ DamageDone Effect::computePremitigationDamage(const Entity& source, const Entity
             case TermStat::current_mana: value = srcStats.current_resource; break;
             case TermStat::lethality: value = source.get_lethality(); break;
             case TermStat::armor_pen: value = source.get_armor_pen(); break;
-            case TermStat::level: value = static_cast<float>(srcStats.level); break;
+            case TermStat::level: value = static_cast<float>(srcStats.level-1); break;
             default: value = 0.0f; break;
         }
         raw += k * value;

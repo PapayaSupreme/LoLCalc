@@ -8,6 +8,7 @@
 using DamageDone = std::array<float, 3>;
 
 class Effect;
+class Stack;
 class Item;
 class Champion : public Entity {
     /*
@@ -19,6 +20,8 @@ protected:
     ChampionStats champion_stats;
     std::vector<const Effect*> on_hit_effects;
     std::vector<const Effect*> on_ability_hit_effects;
+    std::vector<const Effect*> on_attack_effects;
+    std::vector<Stack*> on_attack_stacks;
 public:
     /*
      * Constructor for Champion.
@@ -60,6 +63,8 @@ public:
     [[nodiscard]] const ChampionStats& getChampionStats() const;
     [[nodiscard]] const std::vector<const Effect*>& get_on_hit_effects() const;
     [[nodiscard]] const std::vector<const Effect*>& get_on_ability_hit_effects() const;
+    [[nodiscard]] const std::vector<const Effect*>& get_on_attack_effects() const;
+    [[nodiscard]] std::vector<Stack *> get_on_attack_stacks() const;
 
     void add_omnivamp(float omnivamp) noexcept;
     void add_lifesteal(float lifesteal) noexcept;
@@ -71,6 +76,8 @@ public:
 
     void add_on_hit_effect(const Effect& effect);
     void add_on_ability_hit_effect(const Effect& effect);
+    void add_on_attack_effect(const Effect& effect);
+    void add_on_attack_stack(Stack& stack);
 
     void remove_omnivamp(float omnivamp) noexcept;
     void remove_lifesteal(float lifesteal) noexcept;
