@@ -69,15 +69,15 @@ DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
 DamageDone Champion::attack(Entity& target, const Effect &effect) const {
     DamageDone pre = effect.computePremitigationDamage(*this, target);
     DamageDone post = {};
-    std::vector<const Effect *> es;
-    std::vector<Stack *> ss;
-    std::cout << "Primary effect dmg: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+    std::vector<const Effect *> es = on_attack_effects;
+    std::vector<Stack *> ss = on_attack_stacks;
+    std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     switch (effect.getEffectTrigger()) {
-        case EffectTrigger::OnHit: es = on_hit_effects; break;
+        case EffectTrigger::OnHit: es.insert(es.end(), on_hit_effects.begin(), on_hit_effects.end()); break;
         case EffectTrigger::OnAbilityHit: es = on_ability_hit_effects; break;
-        case EffectTrigger::OnAttack: es = on_attack_effects; ss = on_attack_stacks; break;
         case EffectTrigger::OnCrit:
         case EffectTrigger::OnToggle:
+        case EffectTrigger::OnAttack:
             break;
     }
     for (const Effect* e: es) {
@@ -87,18 +87,18 @@ DamageDone Champion::attack(Entity& target, const Effect &effect) const {
             pre[i] += temp[i];
         }
     }
-    std::cout << "attack dmg pre+effects: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+    std::cout << "All effects dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     for (Stack* s : ss) {
         if (const Effect *effect_maybe = s->add_entity_stack_count(&target); effect_maybe != nullptr) {
             es.push_back(effect_maybe);
             std::cout << s->get_name() << " has proc " << effect_maybe->getName() << " while having "
-            << s->get_entities_stack_count().find(&target)->first;
+            << s->get_entities_stack_count().find(&target)->second << " stacks\n";
         }
-        std::cout << s->get_name() << " has " << s->get_entities_stack_count().find(&target)->first << " on "
-        << target.get_name();
+        std::cout << s->get_name() << " has " << s->get_entities_stack_count().find(&target)->second << " stacks on "
+        << target.get_name() << "\n";
     }
     post = target.post_attack(*this, pre);
-    std::cout << "attack dmg post: " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
+    std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
 
     return post;
 }
