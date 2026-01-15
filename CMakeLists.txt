@@ -20,4 +20,6 @@ add_executable(LoLCalc main.cpp
         structs/EffectTrigger.h
         structs/TermStat.h
         structs/Ratio.h
+        damage/Multiplier.cpp
+        damage/Multiplier.h
 )

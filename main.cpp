@@ -2,6 +2,7 @@
 
 #include "entities/Champion.h"
 #include "damage/Effect.h"
+#include "damage/Multiplier.h"
 #include "damage/Stack.h"
 #include "loadout/Item.h"
 
@@ -45,11 +46,7 @@ int main() {
                                   0.0f, 0.0f,
                                   1.0f, 0.0f, 0.0f); // TODO: turn into adaptive dmg
 
-    Effect PTA("Press The Attack", EffectTrigger::OnToggle, 10000.0f,
-                              {{TermStat::level, 0.0f}},
-                              0.0f, std::numeric_limits<float>::infinity(),
-                              0.0f, 0.0f,
-                              1.0f, 0.0f, 0.0f);
+    Multiplier PTA("Press The Attack", 1.08);
 
     // === Stacks Setup ===
 

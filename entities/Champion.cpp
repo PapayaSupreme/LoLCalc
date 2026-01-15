@@ -83,7 +83,7 @@ DamageDone Champion::attack(Entity& target, const Effect &effect) const {
     }
     for (const Effect* e: es) {
         DamageDone temp = e->computePremitigationDamage(*this, target);
-        std::cout << e->getName() << " dmg: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+        std::cout << e->getName() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
         for (int i = 0; i < 3; ++i) {
             pre[i] += temp[i];
         }

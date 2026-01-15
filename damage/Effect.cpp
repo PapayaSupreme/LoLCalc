@@ -6,10 +6,10 @@
 
 #include "../entities/Champion.h"
 
-Effect::Effect(std::string name, const EffectTrigger effect_trigger, const float base_dmg, std::vector<Ratio> terms, const float min_damage,
+Effect::Effect(std::string name, const EffectTrigger effect_trigger, const float base_damage, std::vector<Ratio> terms, const float min_damage,
     const float max_damage, const float max_monster_damage, const float max_epic_monster_damage,
     const float physical_ratio, const float magical_ratio, const float true_ratio)
-    : name(std::move(name)), effect_trigger(effect_trigger), base_damage(base_dmg), ratios(std::move(terms)), min_damage(min_damage), max_damage(max_damage),
+    : name(std::move(name)), effect_trigger(effect_trigger), base_damage(base_damage), ratios(std::move(terms)), min_damage(min_damage), max_damage(max_damage),
       max_monster_damage(max_monster_damage), max_epic_monster_damage(max_epic_monster_damage), //TODO: add max dmg to monters logic
       physical_ratio(physical_ratio), magical_ratio(magical_ratio), true_ratio(true_ratio) {}
 
@@ -21,11 +21,13 @@ float Effect::get_base_damage() const { return base_damage; }
 DamageDone Effect::computePremitigationDamage(const Entity& source, const Entity& target) const {
     const Stats& srcStats = source.getStats();
     const Stats& tgtStats = target.getStats();
-
+    float multiplier = 1.0f;
     float raw = get_base_damage();
     for (const auto&[stat, k] : ratios) {
+        multiplier = 1.0f;
         float value = 0.0f;
         switch (stat) {
+            case TermStat::damage_amplifier: multiplier = k;
             case TermStat::total_AD: value = srcStats.base_AD + srcStats.bonus_AD; break;
             case TermStat::base_AD: value = srcStats.base_AD; break;
             case TermStat::bonus_AD: value = srcStats.bonus_AD; break;
@@ -58,8 +60,8 @@ DamageDone Effect::computePremitigationDamage(const Entity& source, const Entity
     //std::cout << "HERE  RAW OF " << this->getName() << raw;
 
     DamageDone damage_done {};
-    damage_done[static_cast<int>(DamageType::Physical)] = raw * physical_ratio;
-    damage_done[static_cast<int>(DamageType::Magical)] = raw * magical_ratio;
-    damage_done[static_cast<int>(DamageType::True)] = raw * true_ratio;
+    damage_done[static_cast<int>(DamageType::Physical)] = raw * physical_ratio * multiplier;
+    damage_done[static_cast<int>(DamageType::Magical)] = raw * magical_ratio * multiplier;
+    damage_done[static_cast<int>(DamageType::True)] = raw * true_ratio * multiplier;
     return damage_done;
 }

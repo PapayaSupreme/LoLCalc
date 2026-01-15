@@ -98,6 +98,13 @@ build CMakeFiles/LoLCalc.dir/damage/Stack.cpp.obj: CXX_COMPILER__LoLCalc_unscann
   OBJECT_DIR = CMakeFiles\LoLCalc.dir
   OBJECT_FILE_DIR = CMakeFiles\LoLCalc.dir\damage
 
+build CMakeFiles/LoLCalc.dir/damage/Multiplier.cpp.obj: CXX_COMPILER__LoLCalc_unscanned_Debug C$:/Users/pablo/CLionProjects/LoLCalc/damage/Multiplier.cpp || cmake_object_order_depends_target_LoLCalc
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\LoLCalc.dir\damage\Multiplier.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\LoLCalc.dir
+  OBJECT_FILE_DIR = CMakeFiles\LoLCalc.dir\damage
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target LoLCalc
@@ -106,7 +113,7 @@ build CMakeFiles/LoLCalc.dir/damage/Stack.cpp.obj: CXX_COMPILER__LoLCalc_unscann
 #############################################
 # Link the executable LoLCalc.exe
 
-build LoLCalc.exe: CXX_EXECUTABLE_LINKER__LoLCalc_Debug CMakeFiles/LoLCalc.dir/main.cpp.obj CMakeFiles/LoLCalc.dir/entities/Entity.cpp.obj CMakeFiles/LoLCalc.dir/entities/Champion.cpp.obj CMakeFiles/LoLCalc.dir/test/testDamage.cpp.obj CMakeFiles/LoLCalc.dir/damage/Effect.cpp.obj CMakeFiles/LoLCalc.dir/loadout/Item.cpp.obj CMakeFiles/LoLCalc.dir/damage/Stack.cpp.obj
+build LoLCalc.exe: CXX_EXECUTABLE_LINKER__LoLCalc_Debug CMakeFiles/LoLCalc.dir/main.cpp.obj CMakeFiles/LoLCalc.dir/entities/Entity.cpp.obj CMakeFiles/LoLCalc.dir/entities/Champion.cpp.obj CMakeFiles/LoLCalc.dir/test/testDamage.cpp.obj CMakeFiles/LoLCalc.dir/damage/Effect.cpp.obj CMakeFiles/LoLCalc.dir/loadout/Item.cpp.obj CMakeFiles/LoLCalc.dir/damage/Stack.cpp.obj CMakeFiles/LoLCalc.dir/damage/Multiplier.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
