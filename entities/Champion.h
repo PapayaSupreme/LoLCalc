@@ -5,9 +5,12 @@
 
 #include "Entity.h"
 
+
 using DamageDone = std::array<float, 3>;
 
+class Multiplier;
 class Effect;
+class Damage;
 class Stack;
 class Item;
 class Champion : public Entity {
@@ -18,9 +21,10 @@ class Champion : public Entity {
      */
 protected:
     ChampionStats champion_stats;
-    std::vector<const Effect*> on_hit_effects;
-    std::vector<const Effect*> on_ability_hit_effects;
-    std::vector<const Effect*> on_attack_effects;
+    std::vector<const Damage*> on_hit_damage_effects;
+    std::vector<const Damage*> on_ability_hit_damage_effects;
+    std::vector<const Damage*> on_attack_damage_effects;
+    std::vector<const Multiplier*> post_attack_multiplier;
     std::vector<Stack*> on_attack_stacks;
 public:
     /*
@@ -61,10 +65,11 @@ public:
     [[nodiscard]] float get_crit_damage_reduction() const noexcept;
     // Champion stat list getter
     [[nodiscard]] const ChampionStats& getChampionStats() const;
-    [[nodiscard]] const std::vector<const Effect*>& get_on_hit_effects() const;
-    [[nodiscard]] const std::vector<const Effect*>& get_on_ability_hit_effects() const;
-    [[nodiscard]] const std::vector<const Effect*>& get_on_attack_effects() const;
+    [[nodiscard]] const std::vector<const Damage *> &get_on_hit_effects() const;
+    [[nodiscard]] const std::vector<const Damage *> &get_on_ability_hit_effects() const;
+    [[nodiscard]] const std::vector<const Damage *> &get_on_attack_effects() const;
     [[nodiscard]] std::vector<Stack *> get_on_attack_stacks() const;
+    [[nodiscard]] const std::vector<const Multiplier *> &get_post_attack_multipliers() const;
 
     void add_omnivamp(float omnivamp) noexcept;
     void add_lifesteal(float lifesteal) noexcept;
@@ -74,10 +79,11 @@ public:
     void add_magic_pen(float magic_pen) noexcept;
     void add_magic_pen_flat(float magic_pen_flat) noexcept;
 
-    void add_on_hit_effect(const Effect& effect);
-    void add_on_ability_hit_effect(const Effect& effect);
-    void add_on_attack_effect(const Effect& effect);
+    void add_on_hit_effect(const Damage& effect);
+    void add_on_ability_hit_effect(const Damage& effect);
+    void add_on_attack_effect(const Damage& effect);
     void add_on_attack_stack(Stack& stack);
+    void add_post_attack_multiplier(const Multiplier& multiplier);
 
     void remove_omnivamp(float omnivamp) noexcept;
     void remove_lifesteal(float lifesteal) noexcept;
@@ -93,7 +99,7 @@ public:
      */
     [[nodiscard]] DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) override;
 
-    [[nodiscard]] DamageDone attack(Entity& target, const Effect& effect) const;
+    [[nodiscard]] DamageDone attack(Entity& target, const Damage& effect) const;
 
     /*
      * Adds an item, its stats and its  effects to a champion

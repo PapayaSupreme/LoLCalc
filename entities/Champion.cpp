@@ -3,6 +3,7 @@
 #include <array>
 #include <iostream>
 
+#include "../damage/Multiplier.h"
 #include "../damage/Stack.h"
 #include "../loadout/Item.h"
 #include "../structs/TermStat.h"
@@ -28,10 +29,11 @@ float Champion::get_ultimate_AH() const noexcept {return champion_stats.ultimate
 float Champion::get_crit_damage_reduction() const noexcept {return champion_stats.crit_damage_reduction;}
 
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
-const std::vector<const Effect*>& Champion::get_on_hit_effects() const { return on_hit_effects; }
-const std::vector<const Effect*>& Champion::get_on_ability_hit_effects() const { return on_ability_hit_effects; }
-const std::vector<const Effect*>& Champion::get_on_attack_effects() const { return on_attack_effects; }
+const std::vector<const Damage *> &Champion::get_on_hit_effects() const { return on_hit_damage_effects; }
+const std::vector<const Damage *> &Champion::get_on_ability_hit_effects() const { return on_ability_hit_damage_effects; }
+const std::vector<const Damage *> &Champion::get_on_attack_effects() const { return on_attack_damage_effects; }
 std::vector<Stack *> Champion::get_on_attack_stacks() const { return on_attack_stacks; }
+const std::vector<const Multiplier *> &Champion::get_post_attack_multipliers() const { return post_attack_multiplier; }
 
 void Champion::add_omnivamp(const float omnivamp) noexcept { champion_stats.omnivamp += omnivamp; }
 void Champion::add_lifesteal(const float lifesteal) noexcept { champion_stats.lifesteal += lifesteal; }
@@ -41,10 +43,11 @@ void Champion::add_armor_pen(const float armor_pen) noexcept { champion_stats.ar
 void Champion::add_magic_pen(const float magic_pen) noexcept { champion_stats.magic_pen += magic_pen; }
 void Champion::add_magic_pen_flat(const float magic_pen_flat) noexcept { champion_stats.magic_pen_flat += magic_pen_flat; }
 
-void Champion::add_on_hit_effect(const Effect &effect) { on_hit_effects.push_back(&effect); }
-void Champion::add_on_ability_hit_effect(const Effect &effect) { on_ability_hit_effects.push_back(&effect); }
-void Champion::add_on_attack_effect(const Effect &effect) { on_attack_effects.push_back(&effect); }
+void Champion::add_on_hit_effect(const Damage &effect) { on_hit_damage_effects.push_back(&effect); }
+void Champion::add_on_ability_hit_effect(const Damage &effect) { on_ability_hit_damage_effects.push_back(&effect); }
+void Champion::add_on_attack_effect(const Damage &effect) { on_attack_damage_effects.push_back(&effect); }
 void Champion::add_on_attack_stack(Stack &stack) { on_attack_stacks.push_back(&stack); }
+void Champion::add_post_attack_multiplier(const Multiplier &multiplier) { post_attack_multiplier.push_back(&multiplier); }
 
 void Champion::remove_omnivamp(const float omnivamp) noexcept { champion_stats.omnivamp -= omnivamp; }
 void Champion::remove_lifesteal(const float lifesteal) noexcept { champion_stats.lifesteal -= lifesteal; }
@@ -66,52 +69,72 @@ DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
     return dmg_post;
 }
 
-DamageDone Champion::attack(Entity& target, const Effect &effect) const {
-    DamageDone pre = effect.computePremitigationDamage(*this, target);
+DamageDone Champion::attack(Entity& target, const Damage &effect) const {
+    DamageDone pre = effect.compute_premitigation_damage(*this, target);
+    float multiplier = 1.0f;
     DamageDone post = {};
-    std::vector<const Effect *> es = on_attack_effects;
-    const std::vector<Stack *> ss = on_attack_stacks;
+    std::vector<const Damage *> damages = on_attack_damage_effects;
+    const std::vector<Stack *> stacks = on_attack_stacks;
+    std::vector<const Multiplier *> multipliers = post_attack_multiplier;
     std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
-    switch (effect.getEffectTrigger()) {
-        case EffectTrigger::OnHit: es.insert(es.end(), on_hit_effects.begin(), on_hit_effects.end()); break;
-        case EffectTrigger::OnAbilityHit: es = on_ability_hit_effects; break;
+
+    switch (effect.get_effect_trigger()) {
+        case EffectTrigger::OnHit: damages.insert(damages.end(), on_hit_damage_effects.begin(), on_hit_damage_effects.end()); break;
+        case EffectTrigger::OnAbilityHit: damages = on_ability_hit_damage_effects; break;
         case EffectTrigger::OnCrit:
         case EffectTrigger::OnToggle:
         case EffectTrigger::OnAttack:
         case EffectTrigger::OnActivate:
+        case EffectTrigger::AfterAttack:
             break;
     }
-    for (const Effect* e: es) {
-        DamageDone temp = e->computePremitigationDamage(*this, target);
-        std::cout << e->getName() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+
+    for (const Damage* d: damages) {
+        DamageDone temp = d->compute_premitigation_damage(*this, target);
+        std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
         for (int i = 0; i < 3; ++i) {
             pre[i] += temp[i];
         }
     }
     std::cout << "All effects dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
-    for (Stack* s : ss) {
-        if (std::vector<const Effect *>effect_maybe = s->add_entity_stack_count(&target); !effect_maybe.empty()) {
-            for (const Effect* e : effect_maybe) {
-                if (e->getEffectTrigger() == EffectTrigger::OnActivate) {
-                    DamageDone temp = e->computePremitigationDamage(*this, target);
-                    std::cout << e->getName() << "details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                                                                                // if one get procced after theres a +1 lag like PTA
+
+    for (Stack* s : stacks) {
+        if (std::vector<const Effect *>effects_maybe = s->add_entity_stack_count(&target); !effects_maybe.empty()) {
+            for (const Effect* e : effects_maybe) {
+                if (e->get_effect_trigger() == EffectTrigger::OnActivate) {
+                    DamageDone temp = e->compute_premitigation_damage(*this, target);
+                    std::cout << e->get_name() << "details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                     for (int i = 0; i < 3; ++i) {
                         pre[i] += temp[i];
                     }
-                    std::cout << s->get_name() << " has proc onActivate " << e->getName() << " while having "
-                    << s->get_entities_stack_count().find(&target)->second << " stacks\n";
-                } else if (e->getEffectTrigger() == EffectTrigger::OnToggle && std::ranges::find(es, e) == es.end()) {
-                    std::cout << s->get_name() << " has proc onToggle " << e->getName() << " while having "
-                    << s->get_entities_stack_count().find(&target)->second << " stacks\n";
-                    es.push_back(e);
+                    std::cout << s->get_name() << " has proc onActivate " << e->get_name() << " while having "
+                    << s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
+                } else if (e->get_effect_trigger() == EffectTrigger::OnToggle && std::ranges::find(damages, e) == damages.end()) {
+                    std::cout << s->get_name() << " has proc onToggle " << e->get_name() << " while having "
+                    << s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
+                    damages.push_back(static_cast<const Damage *>(e)); //DO NOT CLICK CLANG TIDY I just won't do the comparison for one less if hehe
+                } else if (e->get_effect_trigger() == EffectTrigger::AfterAttack) { // here and only here its mult type
+                    const_cast<Champion&>(*this).add_post_attack_multiplier(*static_cast<const Multiplier *>(e));
+                    std::cout << s->get_name() << " has proc afterAttack " << e->get_name() << " while having "
+                    << s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
                 } else {
-                    std::cout << "switch case of stack proc not done\n";
+                    std::cout << "switch case of stack proc" << e->get_name() <<" not done\n\n";
                 }
             }
         }
         std::cout << s->get_name() << " has " << s->get_entities_stack_count().find(&target)->second << " stacks on "
         << target.get_name() << "\n";
     }
+
+    for (const Multiplier* m : multipliers) {
+        std::cout <<"mult in  loops: " << m->get_multiplier();
+        multiplier *= m->get_multiplier();
+    } //we compute this attack mult here so that
+    for (int i = 0; i < 3; ++i) {
+        pre[i] *= multiplier;
+    }
+    std::cout << "All effects + mults dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     post = target.post_attack(*this, pre);
     std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
 
@@ -132,14 +155,15 @@ void Champion::buy_item(const Item& item) {
             default: break;
         }
     }
-    for (const Effect& effect : item.getEffects()) {
-        switch (effect.getEffectTrigger()) {
+    for (const Damage& effect : item.getEffects()) {
+        switch (effect.get_effect_trigger()) {
             case EffectTrigger::OnHit: add_on_hit_effect(effect); break;
             case EffectTrigger::OnCrit:
             case EffectTrigger::OnAbilityHit:
             case EffectTrigger::OnAttack:
             case EffectTrigger::OnToggle:
             case EffectTrigger::OnActivate:
+            case EffectTrigger::AfterAttack:
                 break;
         }
     }

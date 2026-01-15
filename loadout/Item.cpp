@@ -4,8 +4,8 @@
 
 #include "Item.h"
 
-Item::Item(std::string name, std::vector<Ratio> terms, std::vector<Effect> effects)
+Item::Item(std::string name, std::vector<Ratio> terms, std::vector<Damage> effects)
     : name(std::move(name)), stats(std::move(terms)), effects(std::move(effects)) {}
 
 const std::vector<Ratio>& Item::getStats() const { return stats; }
-const std::vector<Effect>& Item::getEffects() const { return effects; }
+const std::vector<Damage>& Item::getEffects() const { return effects; }

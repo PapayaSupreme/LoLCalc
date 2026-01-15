@@ -7,9 +7,10 @@
 #include "../structs/EffectTrigger.h"
 
 
+class Effect;
 class Entity;
 class Champion;
-class Effect;
+class Damage;
 
 class Stack {
 protected:
@@ -31,7 +32,7 @@ public:
     /*
      *Adds one to the counter of the specified champion, and returns either a pointer of either null or the effect to apply.
      */
-    std::vector<const Effect*> add_entity_stack_count(const Entity *entity);
+    std::vector<const Effect *> add_entity_stack_count(const Entity *entity);
 
     void reset_entity_stack_count(const Entity *entity, bool is_resilient) noexcept;
 };

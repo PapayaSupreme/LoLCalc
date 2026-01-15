@@ -1,7 +1,8 @@
 #include <array>
+#include <iostream>
 
 #include "entities/Champion.h"
-#include "damage/Effect.h"
+#include "damage/Damage.h"
 #include "damage/Multiplier.h"
 #include "damage/Stack.h"
 #include "loadout/Item.h"
@@ -28,19 +29,19 @@ int main() {
     Champion vayne("Vayne", vayneStats, vayneExtras);
 
     // === Effects Setup ===
-    Effect AutoAttackEffect("Auto attack", EffectTrigger::OnHit, 0.0f,
+    Damage AutoAttackEffect("Auto attack", EffectTrigger::OnHit, 0.0f,
                                   {{TermStat::total_AD, 1}},
                                   0.0f, std::numeric_limits<float>::infinity(),
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
                                   1.0f, 0.0f, 0.0f);
 
-    Effect MistsEdge("Mist's Edge", EffectTrigger::OnHit, 0.0f,
+    Damage MistsEdge("Mist's Edge", EffectTrigger::OnHit, 0.0f,
                                   {{TermStat::target_current_health, 0.09}},
                                   0.0f, std::numeric_limits<float>::infinity(),
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
                                   1.0f, 0.0f, 0.0f);
 
-    Effect PTAProc("Press The Attack Proc", EffectTrigger::OnActivate, 40.0f,
+    Damage PTAProc("Press The Attack Proc", EffectTrigger::OnActivate, 40.0f,
                                   {{TermStat::level, 7.06}},
                                   0.0f, std::numeric_limits<float>::infinity(),
                                   0.0f, 0.0f,
@@ -66,12 +67,18 @@ int main() {
     sion.add_on_attack_stack(PTAStack);
 
     DamageDone post = {};
+    DamageDone total = {};
     //testEffectDamage(sion, vayne, AutoAttackEffect);
     //testEffectDamage(sion, vayne, MistsEdge);
-    post = sion.attack(vayne, AutoAttackEffect);
-    post = sion.attack(vayne, AutoAttackEffect);
-    post = sion.attack(vayne, AutoAttackEffect);
-    post = sion.attack(vayne, AutoAttackEffect);
+    for (int i = 0;i<4;i++) {
+        std::cout << "\n======  "<< i << "  ======\n\n";
+        post = sion.attack(vayne, AutoAttackEffect);
+        for (int j = 0;j<3;j++) {
+            total[j] += post[j];
+        }
+    }
+
+    std::cout << "\n TOTAL (POST): " << total[0] << " " << total[1] << " " << total[2] << "\n";
 
     /*
     constexpr int WARMUP = 10'000;

@@ -1,11 +1,9 @@
-//testDamage.cpp
-
 #include <iostream>
 #include "testDamage.h"
 
 #include <array>
 
-#include "../damage/Effect.h"
+#include "../damage/Damage.h"
 
 /*void testDamage(const Entity&source, const Entity& target, const DamageDone pre, const DamageDone post) {
     std::cout << "Raw Physical Damage: " << pre[0] << "\n";
@@ -32,26 +30,26 @@
 // === Auto Attack Test ===
 void testAutoAttackDamage(const Entity& source, Entity& target) {
     const AutoAttack auto_attack = AutoAttack(source, target);
-    DamageDone pre = auto_attack.computePremitigationDamage();
+    DamageDone pre = auto_attack.compute_premitigation_damage();
     const DamageDone post = target.post_attack(source, pre);
 
     std::cout << "Ratios of this Attack: 100% AD \n";
     testDamage(source, target, pre, post);
-}*/
+}
 
 
-// === Effect Test ===
-void testEffectDamage(const Entity& source, Entity& target, const Effect& effect) {
-    DamageDone pre = effect.computePremitigationDamage(source, target);
+// === Damage Test ===
+void testEffectDamage(const Entity& source, Entity& target, const Damage& effect) {
+    DamageDone pre = effect.compute_premitigation_damage(source, target);
     const DamageDone post = target.post_attack(source, pre);
     std::cout << "DMG CALCULATION - Damage pre on target: " << pre[0] << " " << pre[1] << " " << pre[2] << "\n";
     std::cout << "DMG CALCULATION - Damage post on target: " << post[0] << " " << post[1] << " " << post[2] << "\n\n\n";
 }
 
 // === Targeted Ability Test ===
-/*void testAbilityDamage(const Entity& source, Entity& target, const RatioStats &ability_stats, const DamageType type) {
+void testAbilityDamage(const Entity& source, Entity& target, const RatioStats &ability_stats, const DamageType type) {
     const Ability ability = Ability(source, target, ability_stats, type);
-    DamageDone pre = ability.computePremitigationDamage();
+    DamageDone pre = ability.compute_premitigation_damage();
     const DamageDone post = target.PostTargetedAbility(source, pre);
 
     std::cout << "\n[Targeted Ability]\n";
@@ -68,7 +66,7 @@ void testEffectDamage(const Entity& source, Entity& target, const Effect& effect
 void testDoTDamage(const Entity& source, Entity& target,
                    const DoTAbilityStats &dot_ability_stats, DamageType type) {
     DoTAbility dot = DoTAbility(source, target, dot_ability_stats, type);
-    DamageDone pre = dot.computePremitigationDamage();
+    DamageDone pre = dot.compute_premitigation_damage();
     DamageDone post = target.PostTargetedAbility(source, pre);
 
     std::cout << "\n[DoT Ability]\n";

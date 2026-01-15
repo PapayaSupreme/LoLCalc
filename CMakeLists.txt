@@ -11,8 +11,8 @@ add_executable(LoLCalc main.cpp
         entities/Champion.h
         test/testDamage.cpp
         test/testDamage.h
-        damage/Effect.cpp
-        damage/Effect.h
+        damage/Damage.cpp
+        damage/Damage.h
         loadout/Item.cpp
         loadout/Item.h
         damage/Stack.cpp
@@ -22,4 +22,7 @@ add_executable(LoLCalc main.cpp
         structs/Ratio.h
         damage/Multiplier.cpp
         damage/Multiplier.h
+        damage/Effect.cpp
+        damage/Effect.h
+        structs/EffectType.h
 )

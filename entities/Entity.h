@@ -3,7 +3,7 @@
 
 #include "Stats.h"
 
-class Effect;
+class Damage;
 using DamageDone = std::array<float, 3>;
 
 class Entity {
@@ -79,7 +79,7 @@ public:
      */
     [[nodiscard]] virtual DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) = 0;
 
-    //[[nodiscard]] virtual DamageDone attack(const Champion *target, const Effect &effect) const = 0;
+    //[[nodiscard]] virtual DamageDone attack(const Champion *target, const Damage &effect) const = 0;
 
     virtual ~Entity() = default;  // polymorphic destruction
 };

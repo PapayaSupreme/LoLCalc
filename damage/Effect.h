@@ -1,35 +1,24 @@
 #pragma once
 #include <string>
-#include <vector>
-#include <limits>
-#include <algorithm>
 
-#include "../entities/Entity.h"
+
+#include "../structs/EffectType.h"
 #include "../structs/EffectTrigger.h"
-#include "../structs/Ratio.h"
 
 using DamageDone = std::array<float, 3>;
 
+class Entity;
 class Effect {
 protected:
     const std::string name;
-    const EffectTrigger effect_trigger;
-    const float base_damage;
-    const std::vector<Ratio> ratios;
-    const float min_damage;
-    float max_damage = std::numeric_limits<float>::infinity();
-    float max_monster_damage = std::numeric_limits<float>::infinity();
-    float max_epic_monster_damage = std::numeric_limits<float>::infinity();
-    const float physical_ratio;
-    const float magical_ratio;
-    const float true_ratio;
-
+    const EffectType effect_type;
 public:
-    Effect(std::string name, EffectTrigger effect_trigger, float base_damage, std::vector<Ratio> terms, float min_damage, float max_damage,
-    float max_monster_damage, float max_epic_monster_damage, float physical_ratio, float magical_ratio, float true_ratio);
+    virtual ~Effect() = default;
 
-    [[nodiscard]] std::string getName() const;
-    [[nodiscard]] EffectTrigger getEffectTrigger() const;
-    [[nodiscard]] float get_base_damage() const;
-    [[nodiscard]] DamageDone computePremitigationDamage(const Entity& source, const Entity& target) const;
+    Effect(std::string name, EffectType effect_type);
+
+    [[nodiscard]] std::string get_name() const noexcept;
+    [[nodiscard]] EffectType get_effect_type() const noexcept;
+    [[nodiscard]] virtual EffectTrigger get_effect_trigger() const noexcept = 0;
+    [[nodiscard]] virtual DamageDone compute_premitigation_damage(const Entity& source, const Entity& target) const = 0;
 };

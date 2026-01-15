@@ -12,7 +12,7 @@ std::multimap<uint16_t, const Effect *> Stack::get_effects() const noexcept { re
 std::unordered_map<const Entity *, uint16_t> Stack::get_entities_stack_count() const noexcept { return entities_stack_count; }
 bool Stack::get_stop_at_max_count() const noexcept { return stop_at_max_count; }
 
-std::vector<const Effect*>Stack::add_entity_stack_count(const Entity *entity) {
+std::vector<const Effect *> Stack::add_entity_stack_count(const Entity *entity) {
     uint16_t& count = entities_stack_count[entity];
     if (stop_at_max_count  && count >= effects.rbegin()->first) {
         return {};
