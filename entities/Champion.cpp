@@ -94,18 +94,18 @@ DamageDone Champion::attack(Entity& target, const Effect &effect) const {
             for (const Effect* e : effect_maybe) {
                 if (e->getEffectTrigger() == EffectTrigger::OnActivate) {
                     DamageDone temp = e->computePremitigationDamage(*this, target);
-                    std::cout << e->getName() << " dmg: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                    std::cout << e->getName() << "details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                     for (int i = 0; i < 3; ++i) {
                         pre[i] += temp[i];
                     }
-                    std::cout << s->get_name() << " has proc onActivate" << e->getName() << " while having "
+                    std::cout << s->get_name() << " has proc onActivate " << e->getName() << " while having "
                     << s->get_entities_stack_count().find(&target)->second << " stacks\n";
                 } else if (e->getEffectTrigger() == EffectTrigger::OnToggle && std::ranges::find(es, e) == es.end()) {
-                    std::cout << s->get_name() << " has proc onToggle" << e->getName() << " while having "
+                    std::cout << s->get_name() << " has proc onToggle " << e->getName() << " while having "
                     << s->get_entities_stack_count().find(&target)->second << " stacks\n";
                     es.push_back(e);
                 } else {
-                    std::cout << "case of stack proc not done\n";
+                    std::cout << "switch case of stack proc not done\n";
                 }
             }
         }

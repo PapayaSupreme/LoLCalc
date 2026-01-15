@@ -9,18 +9,20 @@
 Effect::Effect(std::string name, const EffectTrigger effect_trigger, const float base_dmg, std::vector<Ratio> terms, const float min_damage,
     const float max_damage, const float max_monster_damage, const float max_epic_monster_damage,
     const float physical_ratio, const float magical_ratio, const float true_ratio)
-    : name(std::move(name)), effect_trigger(effect_trigger), base_dmg(base_dmg), ratios(std::move(terms)), min_damage(min_damage), max_damage(max_damage),
+    : name(std::move(name)), effect_trigger(effect_trigger), base_damage(base_dmg), ratios(std::move(terms)), min_damage(min_damage), max_damage(max_damage),
       max_monster_damage(max_monster_damage), max_epic_monster_damage(max_epic_monster_damage), //TODO: add max dmg to monters logic
       physical_ratio(physical_ratio), magical_ratio(magical_ratio), true_ratio(true_ratio) {}
 
 std::string Effect::getName() const { return name; }
 EffectTrigger Effect::getEffectTrigger() const { return effect_trigger; }
 
+float Effect::get_base_damage() const { return base_damage; }
+
 DamageDone Effect::computePremitigationDamage(const Entity& source, const Entity& target) const {
     const Stats& srcStats = source.getStats();
     const Stats& tgtStats = target.getStats();
 
-    float raw = 0.0f;
+    float raw = get_base_damage();
     for (const auto&[stat, k] : ratios) {
         float value = 0.0f;
         switch (stat) {
@@ -53,6 +55,7 @@ DamageDone Effect::computePremitigationDamage(const Entity& source, const Entity
     }
 
     raw = std::clamp(raw, this->min_damage, this->max_damage);
+    //std::cout << "HERE  RAW OF " << this->getName() << raw;
 
     DamageDone damage_done {};
     damage_done[static_cast<int>(DamageType::Physical)] = raw * physical_ratio;

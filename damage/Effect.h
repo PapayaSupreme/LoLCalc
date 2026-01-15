@@ -14,7 +14,7 @@ class Effect {
 protected:
     const std::string name;
     const EffectTrigger effect_trigger;
-    const float base_dmg;
+    const float base_damage;
     const std::vector<Ratio> ratios;
     const float min_damage;
     float max_damage = std::numeric_limits<float>::infinity();
@@ -29,5 +29,6 @@ public:
 
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] EffectTrigger getEffectTrigger() const;
+    [[nodiscard]] float get_base_damage() const;
     [[nodiscard]] DamageDone computePremitigationDamage(const Entity& source, const Entity& target) const;
 };
