@@ -6,12 +6,31 @@
 
 #include "../entities/Champion.h"
 
-Damage::Damage(std::string name, const EffectTrigger effect_trigger, const float base_damage, std::vector<Ratio> terms, const float min_damage,
-    const float max_damage, const float max_monster_damage, const float max_epic_monster_damage,
+Damage::Damage(std::string name, const EffectTrigger effect_trigger, const float base_damage, std::vector<Ratio> terms,
+    const float min_damage, const float max_damage, const float max_monster_damage, const float max_epic_monster_damage,
     const float physical_ratio, const float magical_ratio, const float true_ratio)
     : Effect(std::move(name), EffectType::Damage), effect_trigger(effect_trigger), base_damage(base_damage), ratios(std::move(terms)), min_damage(min_damage), max_damage(max_damage),
       max_monster_damage(max_monster_damage), max_epic_monster_damage(max_epic_monster_damage), //TODO: add max dmg to monters logic
+      is_adaptive_damage(false), physical_ratio(physical_ratio), magical_ratio(magical_ratio), true_ratio(true_ratio) {}
+
+Damage::Damage(std::string name, const EffectTrigger effect_trigger, const float base_damage, std::vector<Ratio> terms,
+    const float min_damage, const float max_damage, const float max_monster_damage, const float max_epic_monster_damage)
+    : Effect(std::move(name), EffectType::Damage), effect_trigger(effect_trigger), base_damage(base_damage),
+      ratios(std::move(terms)), min_damage(min_damage), max_damage(max_damage),
+      max_monster_damage(max_monster_damage), max_epic_monster_damage(max_epic_monster_damage),
+      is_adaptive_damage(true), physical_ratio(0.0f), magical_ratio(0.0f), true_ratio(0.0f) {}
+
+Damage::Damage(std::string name, const EffectTrigger effect_trigger, const float base_damage, std::vector<Ratio> terms,
+    const float physical_ratio, const float magical_ratio, const float true_ratio)
+    : Effect(std::move(name), EffectType::Damage), effect_trigger(effect_trigger), base_damage(base_damage),
+      ratios(std::move(terms)),is_adaptive_damage(false),
       physical_ratio(physical_ratio), magical_ratio(magical_ratio), true_ratio(true_ratio) {}
+
+Damage::Damage(std::string name, const EffectTrigger effect_trigger, const float base_damage, std::vector<Ratio> terms)
+    : Effect(std::move(name), EffectType::Damage), effect_trigger(effect_trigger), base_damage(base_damage),
+      ratios(std::move(terms)), is_adaptive_damage(true),
+      physical_ratio(0.0f), magical_ratio(0.0f),  true_ratio(0) {
+}
 
 
 EffectTrigger Damage::get_effect_trigger() const noexcept { return effect_trigger; }
@@ -60,8 +79,14 @@ DamageDone Damage::compute_premitigation_damage(const Entity& source, const Enti
     //std::cout << "HERE  RAW OF " << this->getName() << raw;
 
     DamageDone damage_done {};
-    damage_done[static_cast<int>(DamageType::Physical)] = raw * physical_ratio * multiplier;
-    damage_done[static_cast<int>(DamageType::Magical)] = raw * magical_ratio * multiplier;
-    damage_done[static_cast<int>(DamageType::True)] = raw * true_ratio * multiplier;
+    if (is_adaptive_damage) {
+        damage_done[source.get_adaptive_type()] = raw * multiplier;
+    }
+    else {
+        damage_done[0] = raw * physical_ratio * multiplier;
+        damage_done[1] = raw * magical_ratio * multiplier;
+        damage_done[2] = raw * true_ratio * multiplier;
+    }
+
     return damage_done;
 }

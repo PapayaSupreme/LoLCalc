@@ -4,7 +4,7 @@
 struct Stats {
     /*
      * Basic stats for entities.
-     * All floats except level.
+     * All floats except level and default_adaptive_damage;
      */
     float max_HP = 0.0f;
     float current_HP = 0.0f;
@@ -23,6 +23,8 @@ struct Stats {
     float crit_chance = 0.0f;
     float MS = 0.0f;
     int level = 1;
+    int default_adaptive_damage = 0;
+
 };
 
 enum class DamageType : int {

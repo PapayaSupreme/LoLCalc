@@ -23,6 +23,17 @@ float Entity::get_MS() const noexcept {return entity_stats.MS;}
 int Entity::get_level() const noexcept {return entity_stats.level;}
 const Stats& Entity::getStats() const {return entity_stats;}
 
+uint8_t Entity::get_adaptive_type() const {
+    if (entity_stats.bonus_AD > entity_stats.AP)
+    {
+        return 0;
+    }
+    if (entity_stats.bonus_AD > entity_stats.AP) {
+        return 1;
+    }
+    return entity_stats.default_adaptive_damage;
+}
+
 void Entity::add_HP(const float HP) noexcept {
     if (entity_stats.current_HP + HP < entity_stats.max_HP) {
         entity_stats.current_HP += HP;

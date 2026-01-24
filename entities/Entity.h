@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <string>
 
 #include "Stats.h"
@@ -55,6 +56,11 @@ public:
     [[nodiscard]] int get_level() const noexcept;
     //Basic stat list getter
     [[nodiscard]] const Stats& getStats() const;
+
+    /*
+     *1 for physical, 2 for magical
+     **/
+    [[nodiscard]] uint8_t get_adaptive_type() const;
 
     void add_HP(float HP) noexcept;
 

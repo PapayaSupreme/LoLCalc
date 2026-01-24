@@ -10,10 +10,10 @@
 int main() {
     // === Source Setup ===
     Stats sionStats = {
-        .max_HP = 1000,
-        .current_HP = 1000,
+        .max_HP = 1400,
+        .current_HP = 1400,
         .base_AD = 68,
-        .bonus_AD = 11
+        .bonus_AD = 5 // from stat runes
     };
     ChampionStats sionExtras = {
         .lethality = 0.0f,
@@ -23,29 +23,24 @@ int main() {
 
     // === Target Setup ===
     Stats vayneStats = sionStats;
-    vayneStats.base_armor = 50;
-    vayneStats.base_MR = 50;
+    vayneStats.base_armor = 10;
+    vayneStats.base_MR = 10;
     ChampionStats vayneExtras = {};
     Champion vayne("Vayne", vayneStats, vayneExtras);
 
     // === Effects Setup ===
     Damage AutoAttackEffect("Auto attack", EffectTrigger::OnHit, 0.0f,
                                   {{TermStat::total_AD, 1}},
-                                  0.0f, std::numeric_limits<float>::infinity(),
-                                  std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
                                   1.0f, 0.0f, 0.0f);
 
     Damage MistsEdge("Mist's Edge", EffectTrigger::OnHit, 0.0f,
                                   {{TermStat::target_current_health, 0.09}},
                                   0.0f, std::numeric_limits<float>::infinity(),
                                   std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(),
-                                  1.0f, 0.0f, 0.0f);
+                                  1.0f, 0.0f, 0.0f); //TODO: add real max monster dmg
 
     Damage PTAProc("Press The Attack Proc", EffectTrigger::OnActivate, 40.0f,
-                                  {{TermStat::level, 7.06}},
-                                  0.0f, std::numeric_limits<float>::infinity(),
-                                  0.0f, 0.0f,
-                                  1.0f, 0.0f, 0.0f); // TODO: turn into adaptive dmg
+                                  {{TermStat::level, 7.06}});
 
     Multiplier PTA("Press The Attack", 1.08);
 
@@ -65,6 +60,7 @@ int main() {
     sion.buy_item(BORK);
     sion.buy_item(Serylda);
     sion.add_on_attack_stack(PTAStack);
+    std::cout << sion.get_base_AD() << " + " << sion.get_bonus_AD();
 
     DamageDone post = {};
     DamageDone total = {};

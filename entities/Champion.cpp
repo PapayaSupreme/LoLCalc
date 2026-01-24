@@ -75,7 +75,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     DamageDone post = {};
     std::vector<const Damage *> damages = on_attack_damage_effects;
     const std::vector<Stack *> stacks = on_attack_stacks;
-    std::vector<const Multiplier *> multipliers = post_attack_multiplier;
+    const std::vector<const Multiplier *> multipliers = post_attack_multiplier;
     std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
 
     switch (effect.get_effect_trigger()) {
@@ -104,7 +104,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
             for (const Effect* e : effects_maybe) {
                 if (e->get_effect_trigger() == EffectTrigger::OnActivate) {
                     DamageDone temp = e->compute_premitigation_damage(*this, target);
-                    std::cout << e->get_name() << "details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                    std::cout << e->get_name() << " details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                     for (int i = 0; i < 3; ++i) {
                         pre[i] += temp[i];
                     }
