@@ -64,3 +64,8 @@
 2033	2520	7901976940619491	LoLCalc.exe	26ab810f59fa140b
 26	1908	7901978672909140	CMakeFiles/LoLCalc.dir/entities/Champion.cpp.obj	9863a3aa0f232bde
 1909	2415	7901978691721967	LoLCalc.exe	26ab810f59fa140b
+84	1729	7909568715820515	CMakeFiles/LoLCalc.dir/entities/Entity.cpp.obj	dd03ee15e653912f
+112	1767	7909568716098777	CMakeFiles/LoLCalc.dir/damage/Damage.cpp.obj	c6f02ef9ed4b426a
+33	2264	7909568715317215	CMakeFiles/LoLCalc.dir/main.cpp.obj	c7f53a488173ac55
+98	2603	7909568715963988	CMakeFiles/LoLCalc.dir/entities/Champion.cpp.obj	9863a3aa0f232bde
+2604	3207	7909568741013671	LoLCalc.exe	26ab810f59fa140b

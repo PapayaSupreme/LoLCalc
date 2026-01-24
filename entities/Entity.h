@@ -30,7 +30,7 @@ public:
     //name getter
     [[nodiscard]] std::string get_name() const noexcept;
     //Basic stat HP getter
-    [[nodiscard]] float get_HP() const noexcept;
+    [[nodiscard]] float get_max_HP() const noexcept;
     //Basic stat current HP getter
     [[nodiscard]] float get_current_HP() const noexcept;
     //Basic stat base attack damage getter
@@ -56,6 +56,12 @@ public:
     //Basic stat list getter
     [[nodiscard]] const Stats& getStats() const;
 
+    void add_HP(float HP) noexcept;
+
+    /*
+     *removes HP, returns True if entity is dead (entity_stats.current_HP <= 0)
+     */
+    bool remove_HP(float HP) noexcept;
     void add_bonus_AD(float bonus_AD) noexcept;
     void add_bonus_armor(float bonus_armor) noexcept;
     void add_bonus_MR(float bonus_MR) noexcept;

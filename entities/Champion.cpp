@@ -137,7 +137,9 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     std::cout << "All effects + mults dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     post = target.post_attack(*this, pre);
     std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
-
+    //now deal the dmg
+    const bool dead = target.remove_HP(post[0] + post[1] + post[2]);
+    std::cout << "Target is dead : " << dead << "\n";
     return post;
 }
 

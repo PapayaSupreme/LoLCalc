@@ -9,7 +9,7 @@ Entity::Entity(std::string name, const Stats &stats)
     : name(std::move(name)), entity_stats(stats) {}
 
 std::string Entity::get_name() const noexcept { return name; }
-float Entity::get_HP() const noexcept { return entity_stats.max_HP; }
+float Entity::get_max_HP() const noexcept { return entity_stats.max_HP; }
 float Entity::get_current_HP() const noexcept { return entity_stats.current_HP; }
 float Entity::get_base_AD() const noexcept {return entity_stats.base_AD;}
 float Entity::get_bonus_AD() const noexcept {return entity_stats.bonus_AD;}
@@ -22,6 +22,19 @@ float Entity::get_crit_chance() const noexcept {return entity_stats.crit_chance;
 float Entity::get_MS() const noexcept {return entity_stats.MS;}
 int Entity::get_level() const noexcept {return entity_stats.level;}
 const Stats& Entity::getStats() const {return entity_stats;}
+
+void Entity::add_HP(const float HP) noexcept {
+    if (entity_stats.current_HP + HP < entity_stats.max_HP) {
+        entity_stats.current_HP += HP;
+    } else {
+        entity_stats.current_HP = entity_stats.max_HP;
+    }
+}
+
+bool Entity::remove_HP(const float HP) noexcept {
+    entity_stats.current_HP -= HP;
+    return entity_stats.current_HP <= 0;
+}
 
 void Entity::add_bonus_AD(const float bonus_AD) noexcept { entity_stats.bonus_AD += bonus_AD; }
 void Entity::add_bonus_armor(const float bonus_armor) noexcept { entity_stats.bonus_armor += bonus_armor; }
