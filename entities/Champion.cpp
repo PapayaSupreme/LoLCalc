@@ -71,6 +71,7 @@ DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
 
 /**
  * Champion attack method, attached to the champion source.
+ * Calls to compute_premitigation_damage, post_attack.
  * @param target entity target reference
  * @param effect damage effect reference
  * @return DamageDone struct containing the final damage done after mitigation.
@@ -88,7 +89,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
         // iterates through effect triggers of the effects of the source champ, applying eligible to the attack.
         case EffectTrigger::OnHit: damages.insert(damages.end(), on_hit_damage_effects.begin(), on_hit_damage_effects.end()); break;
         case EffectTrigger::OnAbilityHit: damages = on_ability_hit_damage_effects; break;
-        case EffectTrigger::OnCrit:
+        case EffectTrigger::OnCrit: //TODO: implement these
         case EffectTrigger::OnToggle:
         case EffectTrigger::OnAttack:
         case EffectTrigger::OnActivate:
