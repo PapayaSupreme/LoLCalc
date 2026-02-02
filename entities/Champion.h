@@ -22,7 +22,7 @@ class Champion : public Entity {
 protected:
     ChampionStats champion_stats;
     std::vector<const Damage*> on_hit_damage_effects;
-    std::vector<const Damage*> on_ability_hit_damage_effects;
+    std::vector<const Damage*> on_ability_damage_effects; // TODO: some abilities dont proc effects when they dont damage except hextech alternator, eg anivia wall. fix that
     std::vector<const Damage*> on_attack_damage_effects;
     std::vector<const Multiplier*> post_attack_multiplier;
     std::vector<Stack*> on_attack_stacks;

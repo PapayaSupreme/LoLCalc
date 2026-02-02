@@ -30,7 +30,7 @@ float Champion::get_crit_damage_reduction() const noexcept {return champion_stat
 
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
 const std::vector<const Damage *> &Champion::get_on_hit_effects() const { return on_hit_damage_effects; }
-const std::vector<const Damage *> &Champion::get_on_ability_hit_effects() const { return on_ability_hit_damage_effects; }
+const std::vector<const Damage *> &Champion::get_on_ability_hit_effects() const { return on_ability_damage_effects; }
 const std::vector<const Damage *> &Champion::get_on_attack_effects() const { return on_attack_damage_effects; }
 std::vector<Stack *> Champion::get_on_attack_stacks() const { return on_attack_stacks; }
 const std::vector<const Multiplier *> &Champion::get_post_attack_multipliers() const { return post_attack_multiplier; }
@@ -44,7 +44,7 @@ void Champion::add_magic_pen(const float magic_pen) noexcept { champion_stats.ma
 void Champion::add_magic_pen_flat(const float magic_pen_flat) noexcept { champion_stats.magic_pen_flat += magic_pen_flat; }
 
 void Champion::add_on_hit_effect(const Damage &effect) { on_hit_damage_effects.push_back(&effect); }
-void Champion::add_on_ability_hit_effect(const Damage &effect) { on_ability_hit_damage_effects.push_back(&effect); }
+void Champion::add_on_ability_hit_effect(const Damage &effect) { on_ability_damage_effects.push_back(&effect); }
 void Champion::add_on_attack_effect(const Damage &effect) { on_attack_damage_effects.push_back(&effect); }
 void Champion::add_on_attack_stack(Stack &stack) { on_attack_stacks.push_back(&stack); }
 void Champion::add_post_attack_multiplier(const Multiplier &multiplier) { post_attack_multiplier.push_back(&multiplier); }
@@ -79,7 +79,6 @@ DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
 DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     DamageDone pre = effect.compute_premitigation_damage(*this, target);
     float multiplier = 1.0f;
-    DamageDone post = {};
     std::vector<const Damage *> damages = on_attack_damage_effects;
     const std::vector<Stack *> stacks = on_attack_stacks;
     const std::vector<const Multiplier *> multipliers = post_attack_multiplier;
@@ -87,8 +86,25 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
 
     switch (effect.get_effect_trigger()) {
         // iterates through effect triggers of the effects of the source champ, applying eligible to the attack.
-        case EffectTrigger::OnHit: damages.insert(damages.end(), on_hit_damage_effects.begin(), on_hit_damage_effects.end()); break;
-        case EffectTrigger::OnAbilityHit: damages = on_ability_hit_damage_effects; break;
+        // on_attack_damage_effects are always added tho, just below the switch
+        case EffectTrigger::OnHit: {
+            for (const Damage* d: on_hit_damage_effects) {
+                DamageDone temp = d->compute_premitigation_damage(*this, target);
+                std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                for (int i = 0; i < 3; ++i) {
+                    pre[i] += temp[i];
+                }
+            }
+        } break;
+        case EffectTrigger::OnAbilityHit: {
+            for (const Damage* d: on_ability_damage_effects) {
+                DamageDone temp = d->compute_premitigation_damage(*this, target);
+                std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                for (int i = 0; i < 3; ++i) {
+                    pre[i] += temp[i];
+                }
+            }
+        } break;
         case EffectTrigger::OnCrit: //TODO: implement these
         case EffectTrigger::OnToggle:
         case EffectTrigger::OnAttack:
@@ -97,7 +113,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
             break;
     }
 
-    for (const Damage* d: damages) {
+    for (const Damage* d: on_attack_damage_effects) {
         DamageDone temp = d->compute_premitigation_damage(*this, target);
         std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
         for (int i = 0; i < 3; ++i) {
@@ -144,7 +160,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
         pre[i] *= multiplier;
     }
     std::cout << "All effects + mults dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
-    post = target.post_attack(*this, pre);
+    const DamageDone post = target.post_attack(*this, pre);
     std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
     //now deal the dmg
     const bool dead = target.remove_HP(post[0] + post[1] + post[2]);
