@@ -12,6 +12,11 @@ std::multimap<uint16_t, const Effect *> Stack::get_effects() const noexcept { re
 std::unordered_map<const Entity *, uint16_t> Stack::get_entities_stack_count() const noexcept { return entities_stack_count; }
 bool Stack::get_stop_at_max_count() const noexcept { return stop_at_max_count; }
 
+/**
+ * Adds one stack to the counter of the specified champion.
+ * @param entity pointer to the entity to add a stack to
+ * @return vector of pointers to new effects to apply, or {} if none
+ */
 std::vector<const Effect *> Stack::add_entity_stack_count(const Entity *entity) {
     uint16_t& count = entities_stack_count[entity];
     if (stop_at_max_count  && count >= effects.rbegin()->first) {

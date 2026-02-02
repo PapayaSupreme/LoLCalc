@@ -69,6 +69,12 @@ DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
     return dmg_post;
 }
 
+/**
+ * Champion attack method, attached to the champion source.
+ * @param target entity target reference
+ * @param effect damage effect reference
+ * @return DamageDone struct containing the final damage done after mitigation.
+ */
 DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     DamageDone pre = effect.compute_premitigation_damage(*this, target);
     float multiplier = 1.0f;
@@ -79,6 +85,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
 
     switch (effect.get_effect_trigger()) {
+        // iterates through effect triggers of the effects of the source champ, applying eligible to the attack.
         case EffectTrigger::OnHit: damages.insert(damages.end(), on_hit_damage_effects.begin(), on_hit_damage_effects.end()); break;
         case EffectTrigger::OnAbilityHit: damages = on_ability_hit_damage_effects; break;
         case EffectTrigger::OnCrit:
@@ -97,9 +104,10 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
         }
     }
     std::cout << "All effects dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
-                                                                                // if one get procced after theres a +1 lag like PTA
+    // for if one procs after there's a +1 lag like PTA
 
     for (Stack* s : stacks) {
+        // iterates through every source of stack of the source champion (PTA, conq...)
         if (std::vector<const Effect *>effects_maybe = s->add_entity_stack_count(&target); !effects_maybe.empty()) {
             for (const Effect* e : effects_maybe) {
                 if (e->get_effect_trigger() == EffectTrigger::OnActivate) {
@@ -143,6 +151,10 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     return post;
 }
 
+/**
+ * Applies the stats and effects of a bought item to the champion.
+ * @param item reference of the just bought item
+ */
 void Champion::buy_item(const Item& item) {
     for (const auto&[stat, k] : item.getStats()) {
         switch (stat) {

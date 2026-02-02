@@ -23,6 +23,10 @@ float Entity::get_MS() const noexcept {return entity_stats.MS;}
 int Entity::get_level() const noexcept {return entity_stats.level;}
 const Stats& Entity::getStats() const {return entity_stats;}
 
+/**
+ * Get the adaptive damage type of the entity. Either the biggest between bonus AD and AP, or the default adaptive damage type.
+ * @return 0 if AD, 1 if AP
+ */
 uint8_t Entity::get_adaptive_type() const {
     if (entity_stats.bonus_AD > entity_stats.AP)
     {
@@ -55,8 +59,11 @@ void Entity::add_AP(const float AP) noexcept { entity_stats.AP += AP; }
 void Entity::add_bonus_health(const float bonus_health) noexcept { entity_stats.max_HP += bonus_health; }
 void Entity::add_bonus_mana(const float bonus_mana) noexcept { entity_stats.bonus_resource += bonus_mana; }
 
-
-
+/**
+ * Computes the damage done to the entity after applying armor, armor pen and lethality of a given amount.
+ * @param Source Entity source of the damage reference
+ * @return The damage reduction multiplier after armor is applied
+ */
 float Entity::computeArmorReduction(const Entity& Source) const {
     float temp_armor = this->get_armor();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
@@ -74,6 +81,11 @@ float Entity::computeArmorReduction(const Entity& Source) const {
     return reduction;
 }
 
+/**
+ * Computes the damage done to the entity after applying mr, magic pen and flat magic pen of a given amount.
+ * @param Source Entity source of the damage reference
+ * @return The damage reduction multiplier after mr is applied
+ */
 float Entity::computeMagicReduction(const Entity& Source) const {
     float temp_mr = this->get_MR();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {

@@ -37,6 +37,12 @@ EffectTrigger Damage::get_effect_trigger() const noexcept { return effect_trigge
 
 float Damage::get_base_damage() const noexcept { return base_damage; }
 
+/**
+ * Computes the pre-mitigation damage done by this effect from source to target.
+ * @param source source Entity reference
+ * @param target target Entity reference
+ * @return DamageDone struct containing the pre-mitigation damage done
+ */
 DamageDone Damage::compute_premitigation_damage(const Entity& source, const Entity& target) const {
     const Stats& srcStats = source.getStats();
     const Stats& tgtStats = target.getStats();
