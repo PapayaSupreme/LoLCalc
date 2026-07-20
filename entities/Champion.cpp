@@ -126,6 +126,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     for (Stack* s : stacks) {
         // iterates through every source of stack of the source champion (PTA, conq...)
         if (std::vector<const Effect *>effects_maybe = s->add_entity_stack_count(&target); !effects_maybe.empty()) {
+            //loops launch if there is at least 1 effect gained from applying the stack
             for (const Effect* e : effects_maybe) {
                 if (e->get_effect_trigger() == EffectTrigger::OnActivate) {
                     DamageDone temp = e->compute_premitigation_damage(*this, target);

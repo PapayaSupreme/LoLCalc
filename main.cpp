@@ -1,4 +1,5 @@
 #include <array>
+#include <chrono>
 #include <iostream>
 
 #include "entities/Champion.h"
@@ -13,7 +14,7 @@ int main() {
         .max_HP = 1400,
         .current_HP = 1400,
         .base_AD = 68,
-        .bonus_AD = 5 // from stat runes
+        .bonus_AD = 0 // from stat runes
     };
     ChampionStats sionExtras = {
         .lethality = 0.0f,
@@ -23,8 +24,8 @@ int main() {
 
     // === Target Setup ===
     Stats vayneStats = sionStats;
-    vayneStats.base_armor = 10;
-    vayneStats.base_MR = 10;
+    vayneStats.base_armor = 50;
+    vayneStats.base_MR = 50;
     ChampionStats vayneExtras = {};
     Champion vayne("Vayne", vayneStats, vayneExtras);
 
@@ -76,14 +77,13 @@ int main() {
 
     std::cout << "\n TOTAL (POST): " << total[0] << " " << total[1] << " " << total[2] << "\n";
 
-    /*
+
     constexpr int WARMUP = 10'000;
     constexpr int ITERS  = 1'000'000;
 
     // --- WARMUP ---
     for (int i = 0; i < WARMUP; ++i) {
         auto dmg = sion.attack(vayne, AutoAttackEffect);
-        sink += dmg[0] + dmg[1] + dmg[2];
     }
 
     // --- TIMED SECTION ---
@@ -91,7 +91,6 @@ int main() {
 
     for (int i = 0; i < ITERS; ++i) {
         auto dmg = sion.attack(vayne, AutoAttackEffect);
-        sink += dmg[0] + dmg[1] + dmg[2];
     }
 
     const auto end = std::chrono::steady_clock::now();
@@ -103,7 +102,6 @@ int main() {
     std::cout << "Avg per attack: "
               << static_cast<double>(total_ns) / ITERS
               << " ns\n";
-    std::cout << "sink: " << sink << "\n";
-    */
+
     return 0;
 }
