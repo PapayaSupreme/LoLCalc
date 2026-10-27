@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 
-#include "../entities/Stats.h"
 #include "../damage/Damage.h"
 
 class Item {

@@ -2,6 +2,7 @@
 
 #include <array>
 #include <iostream>
+#include <sstream>
 
 #include "../damage/Multiplier.h"
 #include "../damage/Stack.h"
@@ -29,6 +30,17 @@ float Champion::get_ultimate_AH() const noexcept {return champion_stats.ultimate
 float Champion::get_crit_damage_reduction() const noexcept {return champion_stats.crit_damage_reduction;}
 
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
+std::string Champion::toString() const {
+    std::ostringstream output;
+    output << Entity::toString()
+           << "\n  Lethality: " << get_lethality()
+           << "\n  Armor penetration: " << get_armor_pen()
+           << "\n  Magic penetration: " << get_magic_pen()
+           << "\n  Flat magic penetration: " << get_magic_pen_flat()
+           << "\n  Lifesteal: " << get_lifesteal()
+           << "\n  Omnivamp: " << get_omnivamp();
+    return output.str();
+}
 const std::vector<const Damage *> &Champion::get_on_hit_effects() const { return on_hit_damage_effects; }
 const std::vector<const Damage *> &Champion::get_on_ability_hit_effects() const { return on_ability_damage_effects; }
 const std::vector<const Damage *> &Champion::get_on_attack_effects() const { return on_attack_damage_effects; }
@@ -80,9 +92,9 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
     DamageDone pre = effect.compute_premitigation_damage(*this, target);
     float multiplier = 1.0f;
     std::vector<const Damage *> damages = on_attack_damage_effects;
-    const std::vector<Stack *> stacks = on_attack_stacks;
-    const std::vector<const Multiplier *> multipliers = post_attack_multiplier;
-    std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+    const std::vector<Stack *>& stacks = on_attack_stacks;
+    const std::vector<const Multiplier *>& multipliers = post_attack_multiplier;
+    //std::cout << "Primary effect dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
 
     switch (effect.get_effect_trigger()) {
         // iterates through effect triggers of the effects of the source champ, applying eligible to the attack.
@@ -90,7 +102,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
         case EffectTrigger::OnHit: {
             for (const Damage* d: on_hit_damage_effects) {
                 DamageDone temp = d->compute_premitigation_damage(*this, target);
-                std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                //std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                 for (int i = 0; i < 3; ++i) {
                     pre[i] += temp[i];
                 }
@@ -99,7 +111,7 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
         case EffectTrigger::OnAbilityHit: {
             for (const Damage* d: on_ability_damage_effects) {
                 DamageDone temp = d->compute_premitigation_damage(*this, target);
-                std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                //std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                 for (int i = 0; i < 3; ++i) {
                     pre[i] += temp[i];
                 }
@@ -115,57 +127,57 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
 
     for (const Damage* d: on_attack_damage_effects) {
         DamageDone temp = d->compute_premitigation_damage(*this, target);
-        std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+        //std::cout << d->get_name() << " damage: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
         for (int i = 0; i < 3; ++i) {
             pre[i] += temp[i];
         }
     }
-    std::cout << "All effects dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+    //std::cout << "All effects dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     // for if one procs after there's a +1 lag like PTA
 
     for (Stack* s : stacks) {
         // iterates through every source of stack of the source champion (PTA, conq...)
-        if (std::vector<const Effect *>effects_maybe = s->add_entity_stack_count(&target); !effects_maybe.empty()) {
+        if (std::vector<const Effect *> effects_maybe = s->add_entity_stack_count(&target); !effects_maybe.empty()) {
             //loops launch if there is at least 1 effect gained from applying the stack
             for (const Effect* e : effects_maybe) {
                 if (e->get_effect_trigger() == EffectTrigger::OnActivate) {
                     DamageDone temp = e->compute_premitigation_damage(*this, target);
-                    std::cout << e->get_name() << " details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
+                    //std::cout << e->get_name() << " details: " << temp[0] << " " << temp[1] << " " << temp[2] << "\n\n";
                     for (int i = 0; i < 3; ++i) {
                         pre[i] += temp[i];
                     }
-                    std::cout << s->get_name() << " has proc onActivate " << e->get_name() << " while having "
-                    << s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
+                    //std::cout << s->get_name() << " has proc onActivate " << e->get_name() << " while having "
+                    //<< s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
                 } else if (e->get_effect_trigger() == EffectTrigger::OnToggle && std::ranges::find(damages, e) == damages.end()) {
-                    std::cout << s->get_name() << " has proc onToggle " << e->get_name() << " while having "
-                    << s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
+                    //std::cout << s->get_name() << " has proc onToggle " << e->get_name() << " while having "
+                    //<< s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
                     damages.push_back(static_cast<const Damage *>(e)); //DO NOT CLICK CLANG TIDY I just won't do the comparison for one less if hehe
                 } else if (e->get_effect_trigger() == EffectTrigger::AfterAttack) { // here and only here its mult type
                     const_cast<Champion&>(*this).add_post_attack_multiplier(*static_cast<const Multiplier *>(e));
-                    std::cout << s->get_name() << " has proc afterAttack " << e->get_name() << " while having "
-                    << s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
+                    //std::cout << s->get_name() << " has proc afterAttack " << e->get_name() << " while having "
+                    //<< s->get_entities_stack_count().find(&target)->second << " stacks\n\n";
                 } else {
-                    std::cout << "switch case of stack proc" << e->get_name() <<" not done\n\n";
+                    //std::cout << "switch case of stack proc" << e->get_name() <<" not done\n\n";
                 }
             }
         }
-        std::cout << s->get_name() << " has " << s->get_entities_stack_count().find(&target)->second << " stacks on "
-        << target.get_name() << "\n";
+        //std::cout << s->get_name() << " has " << s->get_entities_stack_count().find(&target)->second << " stacks on "
+        //<< target.get_name() << "\n";
     }
 
     for (const Multiplier* m : multipliers) {
-        std::cout <<"mult in  loops: " << m->get_multiplier();
+        //std::cout <<"mult in  loops: " << m->get_multiplier();
         multiplier *= m->get_multiplier();
     } //we compute this attack mult here so that
     for (int i = 0; i < 3; ++i) {
         pre[i] *= multiplier;
     }
-    std::cout << "All effects + mults dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
+    //std::cout << "All effects + mults dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
     const DamageDone post = target.post_attack(*this, pre);
-    std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
-    //now deal the dmg
+    //std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
+    // now deal the dmg
     const bool dead = target.remove_HP(post[0] + post[1] + post[2]);
-    std::cout << "Target is dead : " << dead << "\n";
+    //std::cout << "Target is dead : " << dead << "\n";
     return post;
 }
 

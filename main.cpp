@@ -1,14 +1,17 @@
 #include <array>
 #include <chrono>
 #include <iostream>
-
+#include <limits>
+#include <print>
 #include "entities/Champion.h"
 #include "damage/Damage.h"
 #include "damage/Multiplier.h"
 #include "damage/Stack.h"
 #include "loadout/Item.h"
+#include "test/testDamage.h"
 
 int main() {
+    std::println("Initializing...");
     // === Source Setup ===
     Stats sionStats = {
         .max_HP = 1400,
@@ -43,6 +46,10 @@ int main() {
     Damage PTAProc("Press The Attack Proc", EffectTrigger::OnActivate, 40.0f,
                                   {{TermStat::level, 7.06}});
 
+    Damage AbilityEffect("Sion ability", EffectTrigger::OnAbilityHit, 100.0f,
+                                  {{TermStat::total_AD, 0.6f}},
+                                  1.0f, 0.0f, 0.0f);
+
     Multiplier PTA("Press The Attack", 1.08);
 
     // === Stacks Setup ===
@@ -57,51 +64,82 @@ int main() {
         {{TermStat::bonus_AD, 45}, {TermStat::armor_pen, 35}, {TermStat::ability_haste, 15}},
         {});
 
-    //buy
-    sion.buy_item(BORK);
-    sion.buy_item(Serylda);
-    sion.add_on_attack_stack(PTAStack);
-    std::cout << sion.get_base_AD() << " + " << sion.get_bonus_AD();
+    bool quit = false;
+    bool loadoutApplied = false;
 
-    DamageDone post = {};
-    DamageDone total = {};
-    //testEffectDamage(sion, vayne, AutoAttackEffect);
-    //testEffectDamage(sion, vayne, MistsEdge);
-    for (int i = 0;i<4;i++) {
-        std::cout << "\n======  "<< i << "  ======\n\n";
-        post = sion.attack(vayne, AutoAttackEffect);
-        for (int j = 0;j<3;j++) {
-            total[j] += post[j];
+    while (!quit) {
+        std::println("\n=== MAIN MENU ===");
+        std::println("1. See champion stats");
+        std::println("2. Buy items and gain Press The Attack");
+        std::println("3. Test the three damage types");
+        std::println("4. Record the time of 1,000,000 attacks");
+        std::println("0. EXIT");
+        std::print("Choose an option: ");
+
+        int option = -1;
+        if (!(std::cin >> option)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::println("Invalid input.");
+            continue;
+        }
+
+        switch (option) {
+            case 1:
+                std::println("\n{}", sion.toString());
+                std::println("\n{}", vayne.toString());
+                break;
+
+            case 2:
+                if (loadoutApplied) {
+                    std::println("Sion already has BORK, Serylda's Grudge, and PTA.");
+                    break;
+                }
+                sion.buy_item(BORK);
+                sion.buy_item(Serylda);
+                sion.add_on_attack_stack(PTAStack);
+                loadoutApplied = true;
+                std::println("Sion bought BORK and Serylda's Grudge and gained PTA.");
+                break;
+
+            case 3:
+                testAutoAttackDamage(sion, vayne);
+                testAbilityDamage(sion, vayne, AbilityEffect);
+                testEffectDamage(sion, vayne, MistsEdge);
+                break;
+
+            case 4: {
+                constexpr int WARMUP = 10'000;
+                constexpr int ITERS = 1'000'000;
+
+                for (int i = 0; i < WARMUP; ++i) {
+                    static_cast<void>(sion.attack(vayne, AutoAttackEffect));
+                }
+
+                const auto start = std::chrono::steady_clock::now();
+                for (int i = 0; i < ITERS; ++i) {
+                    static_cast<void>(sion.attack(vayne, AutoAttackEffect));
+                }
+                const auto end = std::chrono::steady_clock::now();
+
+                const auto total_ns =
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        end - start).count();
+                std::println("Total: {} ns", total_ns);
+                std::println("Average per attack: {} ns",
+                             static_cast<double>(total_ns) / ITERS);
+                break;
+            }
+
+            case 0:
+                quit = true;
+                break;
+
+            default:
+                std::println("Unknown option.");
+                break;
         }
     }
-
-    std::cout << "\n TOTAL (POST): " << total[0] << " " << total[1] << " " << total[2] << "\n";
-
-
-    constexpr int WARMUP = 10'000;
-    constexpr int ITERS  = 1'000'000;
-
-    // --- WARMUP ---
-    for (int i = 0; i < WARMUP; ++i) {
-        auto dmg = sion.attack(vayne, AutoAttackEffect);
-    }
-
-    // --- TIMED SECTION ---
-    const auto start = std::chrono::steady_clock::now();
-
-    for (int i = 0; i < ITERS; ++i) {
-        auto dmg = sion.attack(vayne, AutoAttackEffect);
-    }
-
-    const auto end = std::chrono::steady_clock::now();
-
-    const auto total_ns =
-        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-
-    std::cout << "Total: " << total_ns << " ns\n";
-    std::cout << "Avg per attack: "
-              << static_cast<double>(total_ns) / ITERS
-              << " ns\n";
 
     return 0;
 }

@@ -30,6 +30,7 @@ public:
 
     //name getter
     [[nodiscard]] std::string get_name() const noexcept;
+    [[nodiscard]] virtual std::string toString() const;
     //Basic stat HP getter
     [[nodiscard]] float get_max_HP() const noexcept;
     //Basic stat current HP getter
@@ -95,4 +96,3 @@ public:
 
     virtual ~Entity() = default;  // polymorphic destruction
 };
-

@@ -65,6 +65,7 @@ public:
     [[nodiscard]] float get_crit_damage_reduction() const noexcept;
     // Champion stat list getter
     [[nodiscard]] const ChampionStats& getChampionStats() const;
+    [[nodiscard]] std::string toString() const override;
     [[nodiscard]] const std::vector<const Damage *> &get_on_hit_effects() const;
     [[nodiscard]] const std::vector<const Damage *> &get_on_ability_hit_effects() const;
     [[nodiscard]] const std::vector<const Damage *> &get_on_attack_effects() const;

@@ -2,6 +2,7 @@
 #include "Entity.h"
 
 #include <iostream>
+#include <sstream>
 
 #include "Champion.h"
 
@@ -9,7 +10,19 @@ Entity::Entity(std::string name, const Stats &stats)
     : name(std::move(name)), entity_stats(stats) {}
 
 std::string Entity::get_name() const noexcept { return name; }
-float Entity::get_max_HP() const noexcept { return entity_stats.max_HP; }
+std::string Entity::toString() const {
+    std::ostringstream output;
+    output << name
+           << "\n  HP: " << entity_stats.current_HP << "/" << entity_stats.max_HP
+           << "\n  AD: " << get_base_AD() << " + " << get_bonus_AD()
+           << "\n  AP: " << get_AP()
+           << "\n  Armor: " << get_armor()
+           << "\n  MR: " << get_MR()
+           << "\n  Attack speed: " << get_AS()
+           << "\n  Ability haste: " << get_AH();
+    return output.str();
+}
+float Entity::get_max_HP() const noexcept {return entity_stats.max_HP; }
 float Entity::get_current_HP() const noexcept { return entity_stats.current_HP; }
 float Entity::get_base_AD() const noexcept {return entity_stats.base_AD;}
 float Entity::get_bonus_AD() const noexcept {return entity_stats.bonus_AD;}

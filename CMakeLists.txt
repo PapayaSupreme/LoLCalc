@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.31)
 project(LoLCalc)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(LoLCalc main.cpp
         entities/Entity.cpp
@@ -26,3 +27,9 @@ add_executable(LoLCalc main.cpp
         damage/Effect.h
         structs/EffectType.h
 )
+
+# GCC's MinGW implementation of <print> keeps terminal support in the
+# experimental standard library extension.
+if (MINGW)
+    target_link_libraries(LoLCalc PRIVATE stdc++exp)
+endif()
