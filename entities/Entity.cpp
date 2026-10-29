@@ -9,38 +9,39 @@
 Entity::Entity(std::string name, const Stats &stats)
     : name(std::move(name)), entity_stats(stats) {}
 
-std::string Entity::get_name() const noexcept { return name; }
+std::string Entity::getName() const noexcept { return name; }
 std::string Entity::toString() const {
     std::ostringstream output;
     output << name
            << "\n  HP: " << entity_stats.current_HP << "/" << entity_stats.max_HP
-           << "\n  AD: " << get_base_AD() << " + " << get_bonus_AD()
-           << "\n  AP: " << get_AP()
-           << "\n  Armor: " << get_armor()
-           << "\n  MR: " << get_MR()
-           << "\n  Attack speed: " << get_AS()
-           << "\n  Ability haste: " << get_AH();
+           << "\n  AD: " << getAD()
+           << "\n  AP: " << getAP()
+           << "\n  Armor: " << getArmor()
+           << "\n  MR: " << getMR()
+           << "\n  Attack speed: " << getAS()
+           << "\n  Ability haste: " << getAH();
     return output.str();
 }
-float Entity::get_max_HP() const noexcept {return entity_stats.max_HP; }
-float Entity::get_current_HP() const noexcept { return entity_stats.current_HP; }
-float Entity::get_base_AD() const noexcept {return entity_stats.base_AD;}
-float Entity::get_bonus_AD() const noexcept {return entity_stats.bonus_AD;}
-float Entity::get_AP() const noexcept {return entity_stats.AP;}
-float Entity::get_armor() const noexcept {return entity_stats.base_armor + entity_stats.bonus_armor;}
-float Entity::get_MR() const noexcept {return entity_stats.base_MR + entity_stats.bonus_MR;}
-float Entity::get_AS() const {return entity_stats.attack_speed;}
-float Entity::get_AH() const noexcept {return entity_stats.ability_haste;}
-float Entity::get_crit_chance() const noexcept {return entity_stats.crit_chance;}
-float Entity::get_MS() const noexcept {return entity_stats.MS;}
-int Entity::get_level() const noexcept {return entity_stats.level;}
-const Stats& Entity::getStats() const {return entity_stats;}
+float Entity::getMaxHP() const noexcept {return entity_stats.max_HP; }
+float Entity::getCurrentHP() const noexcept { return entity_stats.current_HP; }
+float Entity::getBaseAD() const noexcept {return entity_stats.base_AD; }
+float Entity::getBonusAD() const noexcept {return entity_stats.bonus_AD; }
+float Entity::getAD() const noexcept { return entity_stats.base_AD + entity_stats.bonus_AD; }
+float Entity::getAP() const noexcept {return entity_stats.AP; }
+float Entity::getArmor() const noexcept {return entity_stats.base_armor + entity_stats.bonus_armor; }
+float Entity::getMR() const noexcept {return entity_stats.base_MR + entity_stats.bonus_MR; }
+float Entity::getAS() const {return entity_stats.attack_speed; }
+float Entity::getAH() const noexcept {return entity_stats.ability_haste; }
+float Entity::getCritChance() const noexcept {return entity_stats.crit_chance; }
+float Entity::getMS() const noexcept {return entity_stats.MS; }
+int Entity::getLevel() const noexcept {return entity_stats.level; }
+const Stats& Entity::getStats() const {return entity_stats; }
 
 /**
  * Get the adaptive damage type of the entity. Either the biggest between bonus AD and AP, or the default adaptive damage type.
  * @return 0 if AD, 1 if AP
  */
-uint8_t Entity::get_adaptive_type() const {
+uint8_t Entity::getAdaptiveType() const {
     if (entity_stats.bonus_AD > entity_stats.AP)
     {
         return 0;
@@ -51,26 +52,27 @@ uint8_t Entity::get_adaptive_type() const {
     return entity_stats.default_adaptive_damage;
 }
 
-void Entity::add_HP(const float HP) noexcept {
+
+
+bool Entity::removeCurrentHP(const float HP) noexcept {
+    entity_stats.current_HP -= HP;
+    return entity_stats.current_HP <= 0;
+}
+void Entity::addCurrentHP(const float HP) noexcept {
     if (entity_stats.current_HP + HP < entity_stats.max_HP) {
         entity_stats.current_HP += HP;
     } else {
         entity_stats.current_HP = entity_stats.max_HP;
     }
 }
-
-bool Entity::remove_HP(const float HP) noexcept {
-    entity_stats.current_HP -= HP;
-    return entity_stats.current_HP <= 0;
-}
-
-void Entity::add_bonus_AD(const float bonus_AD) noexcept { entity_stats.bonus_AD += bonus_AD; }
-void Entity::add_bonus_armor(const float bonus_armor) noexcept { entity_stats.bonus_armor += bonus_armor; }
-void Entity::add_bonus_MR(const float bonus_MR) noexcept { entity_stats.bonus_MR += bonus_MR; }
-void Entity::add_AS(const float AS) noexcept { entity_stats.attack_speed += AS; }
-void Entity::add_AP(const float AP) noexcept { entity_stats.AP += AP; }
-void Entity::add_bonus_health(const float bonus_health) noexcept { entity_stats.max_HP += bonus_health; }
-void Entity::add_bonus_mana(const float bonus_mana) noexcept { entity_stats.bonus_resource += bonus_mana; }
+void Entity::addBonusAD(const float bonus_AD) noexcept { entity_stats.bonus_AD += bonus_AD; }
+void Entity::addBonusArmor(const float bonus_armor) noexcept { entity_stats.bonus_armor += bonus_armor; }
+void Entity::addBonusMR(const float bonus_MR) noexcept { entity_stats.bonus_MR += bonus_MR; }
+void Entity::addAS(const float AS) noexcept { entity_stats.attack_speed += AS; }
+void Entity::addAP(const float AP) noexcept { entity_stats.AP += AP; }
+void Entity::addBonusHealth(const float bonus_health) noexcept { entity_stats.max_HP += bonus_health; }
+void Entity::addBonusMana(const float bonus_mana) noexcept { entity_stats.bonus_resource += bonus_mana; }
+void Entity::addAH(const float ability_haste) noexcept { entity_stats.ability_haste += ability_haste; }
 
 /**
  * Computes the damage done to the entity after applying armor, armor pen and lethality of a given amount.
@@ -78,11 +80,11 @@ void Entity::add_bonus_mana(const float bonus_mana) noexcept { entity_stats.bonu
  * @return The damage reduction multiplier after armor is applied
  */
 float Entity::computeArmorReduction(const Entity& Source) const {
-    float temp_armor = this->get_armor();
+    float temp_armor = this->getArmor();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_armor >= 0) {
-            temp_armor *= 1.0f - champSource->get_armor_pen()/100;
-            temp_armor -= champSource->get_lethality();
+            temp_armor *= 1.0f - champSource->getArmorPen()/100;
+            temp_armor -= champSource->getLethality();
         }
     }
     float reduction;
@@ -100,11 +102,11 @@ float Entity::computeArmorReduction(const Entity& Source) const {
  * @return The damage reduction multiplier after mr is applied
  */
 float Entity::computeMagicReduction(const Entity& Source) const {
-    float temp_mr = this->get_MR();
+    float temp_mr = this->getMR();
     if (const auto* champSource = dynamic_cast<const Champion*>(&Source)) {
         if (temp_mr >= 0) {
-            temp_mr *= 1.0f - champSource->get_magic_pen()/100;
-            temp_mr -= champSource->get_magic_pen_flat();
+            temp_mr *= 1.0f - champSource->getMagicPen()/100;
+            temp_mr -= champSource->getMagicPenFlat();
         }
     }
     float reduction;

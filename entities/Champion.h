@@ -40,40 +40,41 @@ public:
     // Champion stat heal and shield power getter
     [[nodiscard]] float getHealShieldPower() const;
     // Champion stat lethality getter
-    [[nodiscard]] float get_lethality() const noexcept override;
+    [[nodiscard]] float getLethality() const noexcept override;
     // Champion stat armor penetration getter
-    [[nodiscard]] float get_armor_pen() const noexcept override;
+    [[nodiscard]] float getArmorPen() const noexcept override;
     // Champion stat magic penetration flat getter
-    [[nodiscard]] float get_magic_pen_flat() const noexcept override;
+    [[nodiscard]] float getMagicPenFlat() const noexcept override;
     // Champion stat magic penetration getter
-    [[nodiscard]] float get_magic_pen() const noexcept override;
+    [[nodiscard]] float getMagicPen() const noexcept override;
     // Champion stat life steal getter
-    [[nodiscard]] float get_lifesteal() const noexcept;
+    [[nodiscard]] float getLifesteal() const noexcept;
     // Champion stat omnivamp getter
-    [[nodiscard]] float get_omnivamp() const noexcept;
+    [[nodiscard]] float getOmnivamp() const noexcept;
     // Champion stat tenacity getter
-    [[nodiscard]] float get_tenacity() const noexcept;
+    [[nodiscard]] float getTenacity() const noexcept;
     // Champion stat spell vampirism getter
-    [[nodiscard]] float get_spell_vamp() const noexcept;
+    [[nodiscard]] float getSpellVamp() const noexcept;
     // Champion stat critical damage multiplier getter
-    [[nodiscard]] float get_crit_damage() const noexcept;
+    [[nodiscard]] float getCritDamage() const noexcept;
     // Champion stat basic ability haste getter
-    [[nodiscard]] float get_basic_AH() const noexcept;
+    [[nodiscard]] float getBasicAH() const noexcept;
     // Champion stat ultimate ability haste getter
-    [[nodiscard]] float get_ultimate_AH() const noexcept;
+    [[nodiscard]] float getUltimateAH() const noexcept;
     // Champion stat critical damage reduction getter
-    [[nodiscard]] float get_crit_damage_reduction() const noexcept;
+    [[nodiscard]] float getCritDamageReduction() const noexcept;
     // Champion stat list getter
     [[nodiscard]] const ChampionStats& getChampionStats() const;
     [[nodiscard]] std::string toString() const override;
-    [[nodiscard]] const std::vector<const Damage *> &get_on_hit_effects() const;
-    [[nodiscard]] const std::vector<const Damage *> &get_on_ability_hit_effects() const;
-    [[nodiscard]] const std::vector<const Damage *> &get_on_attack_effects() const;
-    [[nodiscard]] std::vector<Stack *> get_on_attack_stacks() const;
-    [[nodiscard]] const std::vector<const Multiplier *> &get_post_attack_multipliers() const;
+    [[nodiscard]] const std::vector<const Damage *>& getOnHitEffects() const;
+    [[nodiscard]] const std::vector<const Damage *>& getOnAbilityHitEffects() const;
+    [[nodiscard]] const std::vector<const Damage *>& getOnAttackEffects() const;
+    [[nodiscard]] std::vector<Stack *> getOnAttackStacks() const;
+    [[nodiscard]] const std::vector<const Multiplier *>& getPostAttackMultipliers() const;
 
-    void add_omnivamp(float omnivamp) noexcept;
-    void add_lifesteal(float lifesteal) noexcept;
+    void addOmnivamp(float omnivamp) noexcept; // TODO: fucking do a function that takes the thing as input and updates it
+                                                //instead of having 1000 functions
+    void addLifesteal(float lifesteal) noexcept;
     void add_spell_vamp(float spell_vamp) noexcept;
     void add_lethality(float lethality) noexcept;
     void add_armor_pen(float armor_pen) noexcept;
@@ -98,12 +99,12 @@ public:
     /*
      * Computes the damage done to the champion by an unmitigated attack.
      */
-    [[nodiscard]] DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) override;
+    [[nodiscard]] DamageDone postAttack(const Entity& source, DamageDone& dmg_pre) override;
 
     [[nodiscard]] DamageDone attack(Entity& target, const Damage& effect) const;
 
     /*
      * Adds an item, its stats and its  effects to a champion
      */
-    void buy_item(const Item& item);
+    void buyItem(const Item& item);
 };

@@ -73,8 +73,8 @@ DamageDone Damage::compute_premitigation_damage(const Entity& source, const Enti
             case TermStat::base_mana: value = srcStats.base_resource; break;
             case TermStat::bonus_mana: value = srcStats.bonus_resource; break;
             case TermStat::current_mana: value = srcStats.current_resource; break;
-            case TermStat::lethality: value = source.get_lethality(); break;
-            case TermStat::armor_pen: value = source.get_armor_pen(); break;
+            case TermStat::lethality: value = source.getLethality(); break;
+            case TermStat::armor_pen: value = source.getArmorPen(); break;
             case TermStat::level: value = static_cast<float>(srcStats.level-1); break;
             default: value = 0.0f; break;
         }
@@ -86,7 +86,7 @@ DamageDone Damage::compute_premitigation_damage(const Entity& source, const Enti
 
     DamageDone damage_done {};
     if (is_adaptive_damage) {
-        damage_done[source.get_adaptive_type()] = raw * multiplier;
+        damage_done[source.getAdaptiveType()] = raw * multiplier;
     }
     else {
         damage_done[0] = raw * physical_ratio * multiplier;

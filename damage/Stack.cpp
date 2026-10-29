@@ -1,5 +1,5 @@
 #include "Stack.h"
-
+// TODO: remove the fucking multimap what was i thinking hell naww do a simple map to vectors
 Stack::Stack(std::string name, const EffectTrigger effect_trigger,
              std::multimap<uint16_t, const Effect *> effects, const bool stop_at_max_count)
 : name(std::move(name)), effect_trigger(effect_trigger),
@@ -19,7 +19,7 @@ bool Stack::get_stop_at_max_count() const noexcept { return stop_at_max_count; }
  */
 std::vector<const Effect *> Stack::add_entity_stack_count(const Entity *entity) {
     uint16_t& count = entities_stack_count[entity];
-    if (stop_at_max_count  && count >= effects.rbegin()->first) {
+    if (stop_at_max_count && count >= effects.rbegin()->first) {
         return {};
     }
 

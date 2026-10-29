@@ -23,59 +23,61 @@ public:
      */
     Entity(std::string name, const Stats &stats);
 
-    [[nodiscard]] virtual float get_armor_pen() const noexcept { return 0.f; }
-    [[nodiscard]] virtual float get_lethality() const noexcept { return 0.f; }
-    [[nodiscard]] virtual float get_magic_pen() const noexcept { return 0.f; }
-    [[nodiscard]] virtual float get_magic_pen_flat() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float getArmorPen() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float getLethality() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float getMagicPen() const noexcept { return 0.f; }
+    [[nodiscard]] virtual float getMagicPenFlat() const noexcept { return 0.f; }
 
     //name getter
-    [[nodiscard]] std::string get_name() const noexcept;
+    [[nodiscard]] std::string getName() const noexcept;
     [[nodiscard]] virtual std::string toString() const;
     //Basic stat HP getter
-    [[nodiscard]] float get_max_HP() const noexcept;
+    [[nodiscard]] float getMaxHP() const noexcept;
     //Basic stat current HP getter
-    [[nodiscard]] float get_current_HP() const noexcept;
+    [[nodiscard]] float getCurrentHP() const noexcept;
     //Basic stat base attack damage getter
-    [[nodiscard]] float get_base_AD() const noexcept;
+    [[nodiscard]] float getBaseAD() const noexcept;
     //Basic stat bonus attack damage getter
-    [[nodiscard]] float get_bonus_AD() const noexcept;
+    [[nodiscard]] float getBonusAD() const noexcept;
+    [[nodiscard]] float getAD() const noexcept;
     //Basic stat ability power getter
-    [[nodiscard]] float get_AP() const noexcept;
+    [[nodiscard]] float getAP() const noexcept;
     //Basic stat armor getter
-    [[nodiscard]] float get_armor() const noexcept;
+    [[nodiscard]] float getArmor() const noexcept;
     //Basic stat magic resistance getter
-    [[nodiscard]] float get_MR() const noexcept;
+    [[nodiscard]] float getMR() const noexcept;
     //Basic stat attack speed getter
-    [[nodiscard]] float get_AS() const;
+    [[nodiscard]] float getAS() const;
     //Basic stat ability haste getter
-    [[nodiscard]] float get_AH() const noexcept;
+    [[nodiscard]] float getAH() const noexcept;
     //Basic stat critical strike chance getter
-    [[nodiscard]] float get_crit_chance() const noexcept;
+    [[nodiscard]] float getCritChance() const noexcept;
     //Basic stat move speed getter
-    [[nodiscard]] float get_MS() const noexcept;
+    [[nodiscard]] float getMS() const noexcept;
     //Basic stat level getter
-    [[nodiscard]] int get_level() const noexcept;
+    [[nodiscard]] int getLevel() const noexcept;
     //Basic stat list getter
     [[nodiscard]] const Stats& getStats() const;
 
     /*
      *1 for physical, 2 for magical
      **/
-    [[nodiscard]] uint8_t get_adaptive_type() const;
+    [[nodiscard]] uint8_t getAdaptiveType() const;
 
-    void add_HP(float HP) noexcept;
+    void addCurrentHP(float HP) noexcept;
 
     /*
      *removes HP, returns True if entity is dead (entity_stats.current_HP <= 0)
      */
-    bool remove_HP(float HP) noexcept;
-    void add_bonus_AD(float bonus_AD) noexcept;
-    void add_bonus_armor(float bonus_armor) noexcept;
-    void add_bonus_MR(float bonus_MR) noexcept;
-    void add_AS(float AS) noexcept;
-    void add_AP(float AP) noexcept;
-    void add_bonus_health(float bonus_health) noexcept;
-    void add_bonus_mana(float bonus_mana) noexcept;
+    bool removeCurrentHP(float HP) noexcept;
+    void addBonusAD(float bonus_AD) noexcept;
+    void addBonusArmor(float bonus_armor) noexcept;
+    void addBonusMR(float bonus_MR) noexcept;
+    void addAS(float AS) noexcept;
+    void addAP(float AP) noexcept;
+    void addBonusHealth(float bonus_health) noexcept;
+    void addBonusMana(float bonus_mana) noexcept;
+    void addAH(float ability_haste) noexcept;
 
     /*
      * Computes the damage done to the entity after applying armor from an amount.
@@ -90,7 +92,7 @@ public:
     /*
      * Computes the damage done to the entity by an unmitigated attack.
      */
-    [[nodiscard]] virtual DamageDone post_attack(const Entity& source, DamageDone& dmg_pre) = 0;
+    [[nodiscard]] virtual DamageDone postAttack(const Entity& source, DamageDone& dmg_pre) = 0;
 
     //[[nodiscard]] virtual DamageDone attack(const Champion *target, const Damage &effect) const = 0;
 

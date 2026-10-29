@@ -11,8 +11,8 @@ void printDamage(const char* label, const Entity& source, const Entity& target,
               << pre[0] << ", " << pre[1] << ", " << pre[2] << '\n'
               << "Post-mitigation (physical, magic, true): "
               << post[0] << ", " << post[1] << ", " << post[2] << '\n'
-              << "Target armor/MR: " << target.get_armor() << " / "
-              << target.get_MR() << '\n'
+              << "Target armor/MR: " << target.getArmor() << " / "
+              << target.getMR() << '\n'
               << "Armor/MR multipliers: "
               << target.computeArmorReduction(source) << " / "
               << target.computeMagicReduction(source) << "\n";
@@ -22,7 +22,7 @@ void testDamage(const char* label, const Entity& source, Entity& target,
                 const Damage& damage) {
     const DamageDone pre = damage.compute_premitigation_damage(source, target);
     DamageDone postInput = pre;
-    const DamageDone post = target.post_attack(source, postInput);
+    const DamageDone post = target.postAttack(source, postInput);
     printDamage(label, source, target, pre, post);
 }
 } // namespace

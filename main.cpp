@@ -45,10 +45,10 @@ int main() {
 
     Damage PTAProc("Press The Attack Proc", EffectTrigger::OnActivate, 40.0f,
                                   {{TermStat::level, 7.06}});
-
-    Damage AbilityEffect("Sion ability", EffectTrigger::OnAbilityHit, 100.0f,
-                                  {{TermStat::total_AD, 0.6f}},
-                                  1.0f, 0.0f, 0.0f);
+    //the 0.6 total ad ratio is here for the sake of testing on sion which has no ap
+    Damage AbilityEffect("Soul Furnace", EffectTrigger::OnAbilityHit, 40.0f,
+                                  {{TermStat::total_AD, 0.6f}, {TermStat::AP, 0.4f}},
+                                  0.0f, 1.0f, 0.0f);
 
     Multiplier PTA("Press The Attack", 1.08);
 
@@ -95,8 +95,8 @@ int main() {
                     std::println("Sion already has BORK, Serylda's Grudge, and PTA.");
                     break;
                 }
-                sion.buy_item(BORK);
-                sion.buy_item(Serylda);
+                sion.buyItem(BORK);
+                sion.buyItem(Serylda);
                 sion.add_on_attack_stack(PTAStack);
                 loadoutApplied = true;
                 std::println("Sion bought BORK and Serylda's Grudge and gained PTA.");

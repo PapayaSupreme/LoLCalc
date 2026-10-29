@@ -15,40 +15,40 @@ Champion::Champion(std::string name, const Stats& stats, const ChampionStats& ch
 float Champion::getHealthRegen() const {return champion_stats.health_regen;}
 float Champion::getResourceRegen() const {return champion_stats.resource_regen;}
 float Champion::getHealShieldPower() const {return champion_stats.heal_shield_power;}
-float Champion::get_lethality() const noexcept {return champion_stats.lethality;}
-float Champion::get_armor_pen() const noexcept {return champion_stats.armor_pen;}
-float Champion::get_magic_pen_flat() const noexcept {return champion_stats.magic_pen_flat;}
-float Champion::get_magic_pen() const noexcept {return champion_stats.magic_pen;}
-float Champion::get_lifesteal() const noexcept {return champion_stats.lifesteal;}
-float Champion::get_omnivamp() const noexcept {return champion_stats.omnivamp;}
-float Champion::get_tenacity() const noexcept {return champion_stats.tenacity;}
+float Champion::getLethality() const noexcept {return champion_stats.lethality;}
+float Champion::getArmorPen() const noexcept {return champion_stats.armor_pen;}
+float Champion::getMagicPenFlat() const noexcept {return champion_stats.magic_pen_flat;}
+float Champion::getMagicPen() const noexcept {return champion_stats.magic_pen;}
+float Champion::getLifesteal() const noexcept {return champion_stats.lifesteal;}
+float Champion::getOmnivamp() const noexcept {return champion_stats.omnivamp;}
+float Champion::getTenacity() const noexcept {return champion_stats.tenacity;}
 
-float Champion::get_spell_vamp() const noexcept {return champion_stats.spell_vamp;}
-float Champion::get_crit_damage() const noexcept {return champion_stats.crit_damage;}
-float Champion::get_basic_AH() const noexcept {return champion_stats.basic_spells_haste;}
-float Champion::get_ultimate_AH() const noexcept {return champion_stats.ultimate_haste;}
-float Champion::get_crit_damage_reduction() const noexcept {return champion_stats.crit_damage_reduction;}
+float Champion::getSpellVamp() const noexcept {return champion_stats.spell_vamp;}
+float Champion::getCritDamage() const noexcept {return champion_stats.crit_damage;}
+float Champion::getBasicAH() const noexcept {return champion_stats.basic_spells_haste;}
+float Champion::getUltimateAH() const noexcept {return champion_stats.ultimate_haste;}
+float Champion::getCritDamageReduction() const noexcept {return champion_stats.crit_damage_reduction;}
 
 const ChampionStats& Champion::getChampionStats() const {return champion_stats;}
 std::string Champion::toString() const {
     std::ostringstream output;
     output << Entity::toString()
-           << "\n  Lethality: " << get_lethality()
-           << "\n  Armor penetration: " << get_armor_pen()
-           << "\n  Magic penetration: " << get_magic_pen()
-           << "\n  Flat magic penetration: " << get_magic_pen_flat()
-           << "\n  Lifesteal: " << get_lifesteal()
-           << "\n  Omnivamp: " << get_omnivamp();
+           << "\n  Lethality: " << getLethality()
+           << "\n  Armor penetration: " << getArmorPen()
+           << "\n  Magic penetration: " << getMagicPen()
+           << "\n  Flat magic penetration: " << getMagicPenFlat()
+           << "\n  Lifesteal: " << getLifesteal()
+           << "\n  Omnivamp: " << getOmnivamp();
     return output.str();
 }
-const std::vector<const Damage *> &Champion::get_on_hit_effects() const { return on_hit_damage_effects; }
-const std::vector<const Damage *> &Champion::get_on_ability_hit_effects() const { return on_ability_damage_effects; }
-const std::vector<const Damage *> &Champion::get_on_attack_effects() const { return on_attack_damage_effects; }
-std::vector<Stack *> Champion::get_on_attack_stacks() const { return on_attack_stacks; }
-const std::vector<const Multiplier *> &Champion::get_post_attack_multipliers() const { return post_attack_multiplier; }
+const std::vector<const Damage *> &Champion::getOnHitEffects() const { return on_hit_damage_effects; }
+const std::vector<const Damage *> &Champion::getOnAbilityHitEffects() const { return on_ability_damage_effects; }
+const std::vector<const Damage *> &Champion::getOnAttackEffects() const { return on_attack_damage_effects; }
+std::vector<Stack *> Champion::getOnAttackStacks() const { return on_attack_stacks; }
+const std::vector<const Multiplier *> &Champion::getPostAttackMultipliers() const { return post_attack_multiplier; }
 
-void Champion::add_omnivamp(const float omnivamp) noexcept { champion_stats.omnivamp += omnivamp; }
-void Champion::add_lifesteal(const float lifesteal) noexcept { champion_stats.lifesteal += lifesteal; }
+void Champion::addOmnivamp(const float omnivamp) noexcept { champion_stats.omnivamp += omnivamp; }
+void Champion::addLifesteal(const float lifesteal) noexcept { champion_stats.lifesteal += lifesteal; }
 void Champion::add_spell_vamp(const float spell_vamp) noexcept { champion_stats.spell_vamp += spell_vamp; }
 void Champion::add_lethality(const float lethality) noexcept { champion_stats.lethality += lethality; }
 void Champion::add_armor_pen(const float armor_pen) noexcept { champion_stats.armor_pen += armor_pen; }
@@ -70,7 +70,7 @@ void Champion::remove_magic_pen(const float magic_pen) noexcept { champion_stats
 void Champion::remove_magic_pen_flat(const float magic_pen_flat) noexcept { champion_stats.magic_pen_flat -= magic_pen_flat; }
 
 
-DamageDone Champion::post_attack(const Entity& source, DamageDone& dmg_pre) {
+DamageDone Champion::postAttack(const Entity& source, DamageDone& dmg_pre) {
     DamageDone dmg_post = dmg_pre;
     if (dmg_post[static_cast<int>(DamageType::Physical)] > 0.0f) {
         dmg_post[static_cast<int>(DamageType::Physical)] *= computeArmorReduction(source);
@@ -117,12 +117,12 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
                 }
             }
         } break;
-        case EffectTrigger::OnCrit: //TODO: implement these
-        case EffectTrigger::OnToggle:
-        case EffectTrigger::OnAttack:
-        case EffectTrigger::OnActivate:
-        case EffectTrigger::AfterAttack:
-            break;
+            //TODO: implement these
+        case EffectTrigger::OnCrit: throw std::logic_error("Not implemented"); break;
+        case EffectTrigger::OnToggle: throw std::logic_error("Not implemented"); break;
+        case EffectTrigger::OnAttack: break; // always procs, so no action needed see below
+        case EffectTrigger::OnActivate: throw std::logic_error("Not implemented"); break;
+        case EffectTrigger::AfterAttack: throw std::logic_error("Not implemented"); break;
     }
 
     for (const Damage* d: on_attack_damage_effects) {
@@ -137,7 +137,8 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
 
     for (Stack* s : stacks) {
         // iterates through every source of stack of the source champion (PTA, conq...)
-        if (std::vector<const Effect *> effects_maybe = s->add_entity_stack_count(&target); !effects_maybe.empty()) {
+        std::vector<const Effect *> effects_maybe = s->add_entity_stack_count(&target);
+        if (!effects_maybe.empty()) {
             //loops launch if there is at least 1 effect gained from applying the stack
             for (const Effect* e : effects_maybe) {
                 if (e->get_effect_trigger() == EffectTrigger::OnActivate) {
@@ -173,10 +174,10 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
         pre[i] *= multiplier;
     }
     //std::cout << "All effects + mults dmg (PRE): " << pre[0] << " " << pre[1] << " " << pre[2] << "\n\n";
-    const DamageDone post = target.post_attack(*this, pre);
+    const DamageDone post = target.postAttack(*this, pre);
     //std::cout << "All effects dmg (POST): " << post[0] << " " << post[1] << " " << post[2] << "\n\n";
     // now deal the dmg
-    const bool dead = target.remove_HP(post[0] + post[1] + post[2]);
+    const bool dead = target.removeCurrentHP(post[0] + post[1] + post[2]);
     //std::cout << "Target is dead : " << dead << "\n";
     return post;
 }
@@ -185,30 +186,33 @@ DamageDone Champion::attack(Entity& target, const Damage &effect) const {
  * Applies the stats and effects of a bought item to the champion.
  * @param item reference of the just bought item
  */
-void Champion::buy_item(const Item& item) {
+void Champion::buyItem(const Item& item) {
     for (const auto&[stat, k] : item.getStats()) {
         switch (stat) {
-            case TermStat::bonus_AD: add_bonus_AD(k); break;
-            case TermStat::AP: add_AP(k); break;
-            case TermStat::bonus_health: add_bonus_health(k); break;
-            case TermStat::bonus_armor: add_bonus_armor(k); break;
-            case TermStat::bonus_MR: add_bonus_MR(k); break;
-            case TermStat::bonus_mana: add_bonus_mana(k); break;
+            case TermStat::bonus_AD: addBonusAD(k); break;
+            case TermStat::AP: addAP(k); break;
+            case TermStat::bonus_health: addBonusHealth(k); break;
+            case TermStat::bonus_armor: addBonusArmor(k); break;
+            case TermStat::bonus_MR: addBonusMR(k); break;
+            case TermStat::bonus_mana: addBonusMana(k); break;
             case TermStat::lethality: add_lethality(k); break;
             case TermStat::armor_pen: add_armor_pen(k); break;
-            default: break;
+            case TermStat::ability_haste: addAH(k); break;
+            case TermStat::bonus_AS: addAS(k); break;
+            case TermStat::lifesteal: addLifesteal(k); break;
+            default: throw std::invalid_argument("Unknown stat type in item stats.");
         }
     }
     for (const Damage& effect : item.getEffects()) {
         switch (effect.get_effect_trigger()) {
             case EffectTrigger::OnHit: add_on_hit_effect(effect); break;
-            case EffectTrigger::OnCrit:
-            case EffectTrigger::OnAbilityHit:
-            case EffectTrigger::OnAttack:
-            case EffectTrigger::OnToggle:
-            case EffectTrigger::OnActivate:
-            case EffectTrigger::AfterAttack:
-                break;
+            case EffectTrigger::OnCrit: throw std::logic_error("Not implemented"); break;
+            case EffectTrigger::OnAbilityHit: add_on_ability_hit_effect(effect); break;
+            case EffectTrigger::OnAttack: add_on_attack_effect(effect); break;
+            case EffectTrigger::OnToggle: throw std::logic_error("Not implemented"); break;
+            case EffectTrigger::OnActivate: throw std::logic_error("Not implemented"); break;
+            case EffectTrigger::AfterAttack: throw std::logic_error("Not implemented"); break;
+            default: throw std::invalid_argument("Unknown effect trigger type in item effects.");
         }
     }
 }

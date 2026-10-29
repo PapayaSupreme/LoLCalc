@@ -14,7 +14,7 @@ class Damage final : public Effect {
 protected:
     const EffectTrigger effect_trigger;
     const float base_damage;
-    const std::vector<Ratio> ratios;
+    const std::vector<Ratio> ratios;// TODO: add a ratio of the enemy's stats
     float min_damage = 0.0f;
     float max_damage = std::numeric_limits<float>::infinity();
     float max_monster_damage = std::numeric_limits<float>::infinity();
